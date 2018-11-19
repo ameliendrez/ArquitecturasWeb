@@ -75,6 +75,17 @@ public class Usuario {
 		this.trabajosPendientes = new HashSet<Trabajo>();
 		this.trabajosEvaluacion = new HashSet<Trabajo>();
 	}
+	
+//	public Usuario(int dni, String nombre, String apellido) {
+//		this.dni = dni;
+//		this.nombre = nombre;
+//		this.apellido = apellido;
+//		this.lugar = new Lugar();
+//		this.temas = new HashSet<Tematica>();
+//		this.trabajosInvestigacion = new HashSet<Trabajo>();
+//		this.trabajosPendientes = new HashSet<Trabajo>();
+//		this.trabajosEvaluacion = new HashSet<Trabajo>();
+//	}
 
 	public Usuario() {
 		this.temas = new HashSet<Tematica>();

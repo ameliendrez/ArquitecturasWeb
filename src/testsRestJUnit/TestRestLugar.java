@@ -1,4 +1,4 @@
-package test;
+package testsRestJUnit;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,28 +18,30 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public class TestRestTematica {
-
+public class TestRestLugar {
+	
 	public final String BASE_URL = "http://localhost:8080/TPE-ARQUITECTURAS/api";
 
 	public final HttpClient client = HttpClientBuilder.create().build();
 
 	@Test
 	public void testRESTInterface() throws ClientProtocolException, IOException {
-		crearTemas();
-		getTematica();
-		listarTematicas();
+		crearLugares();
+		getLugar();
+		listarLugares();
 		//updateTematica();
 		//deleteTematica();
 	}
 
-	public void crearTemas() throws ClientProtocolException, IOException {
-		String url = BASE_URL + "/tematicas";
+	public void crearLugares() throws ClientProtocolException, IOException {
+		System.out.println("LugarTest-> Se crean lugares");
+
+		String url = BASE_URL + "/lugares";
 
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode jsonObject = mapper.createObjectNode();
-		jsonObject.put("nombre", "Java");
-		jsonObject.put("esExperto", "true");
+		jsonObject.put("nombre", "Pladema");
+		jsonObject.put("ciudad", "Tandil");
 		String jsonString = jsonObject.toString();
 		HttpPost post = new HttpPost(url);
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
@@ -51,8 +53,8 @@ public class TestRestTematica {
 		System.out.println("Response Content : " + resultContent);
 
 		jsonObject = mapper.createObjectNode();
-		jsonObject.put("nombre", "JavaScript");
-		jsonObject.put("esExperto", "false");
+		jsonObject.put("nombre", "Conicet");
+		jsonObject.put("ciudad", "Tandil");
 		jsonString = jsonObject.toString();
 
 		post = new HttpPost(url);
@@ -65,8 +67,8 @@ public class TestRestTematica {
 		System.out.println("Response Content : " + resultContent);
 
 		jsonObject = mapper.createObjectNode();
-		jsonObject.put("nombre", "Eclipse");
-		jsonObject.put("esExperto", "false");
+		jsonObject.put("nombre", "UBA");
+		jsonObject.put("ciudad", "Buenos Aires");
 		jsonString = jsonObject.toString();
 
 		post = new HttpPost(url);
@@ -77,35 +79,6 @@ public class TestRestTematica {
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 		resultContent = getResultContent(response);
 		System.out.println("Response Content : " + resultContent);
-
-		jsonObject = mapper.createObjectNode();
-		jsonObject.put("nombre", "Python");
-		jsonObject.put("esExperto", "true");
-		jsonString = jsonObject.toString();
-
-		post = new HttpPost(url);
-		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
-		response = client.execute(post);
-
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
-
-		jsonObject = mapper.createObjectNode();
-		jsonObject.put("nombre", "Atom");
-		jsonObject.put("esExperto", "false");
-		jsonString = jsonObject.toString();
-
-		post = new HttpPost(url);
-		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
-		response = client.execute(post);
-
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
-
 	}
 
 	private String getResultContent(HttpResponse response) throws IOException {
@@ -124,10 +97,10 @@ public class TestRestTematica {
 		}
 	}
 
-	public void listarTematicas() throws ClientProtocolException, IOException {
-		System.out.println("TematicaTest-> Se traen todos las tematicas");
+	public void listarLugares() throws ClientProtocolException, IOException {
+		System.out.println("LugarTest-> Se traen todos los lugares");
 
-		String url = BASE_URL + "/tematicas";
+		String url = BASE_URL + "/lugares";
 
 		HttpGet request = new HttpGet(url);
 
@@ -143,10 +116,10 @@ public class TestRestTematica {
 
 	}
 
-	public void getTematica() throws ClientProtocolException, IOException {
-		System.out.println("TematicaTest-> Se trae una tematica");
+	public void getLugar() throws ClientProtocolException, IOException {
+		System.out.println("TematicaTest-> Se trae un lugar");
 
-		String url = BASE_URL + "/tematicas/1";
+		String url = BASE_URL + "/lugares/1";
 
 		HttpGet request = new HttpGet(url);
 
