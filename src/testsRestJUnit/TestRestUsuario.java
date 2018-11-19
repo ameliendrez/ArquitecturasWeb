@@ -48,93 +48,25 @@ public class TestRestUsuario {
 		//deleteTematica();
 	}
 
-	private void crearLugar( ) throws ClientProtocolException, IOException{
-		String url = BASE_URL + "/lugares";
-
-		ObjectMapper mapper = new ObjectMapper();
-		ObjectNode jsonObject = mapper.createObjectNode();
-		jsonObject.put("nombre", "Pladema");
-		jsonObject.put("ciudad", "Tandil");
-		String jsonString = jsonObject.toString();
-		HttpPost post = new HttpPost(url);
-		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
-		HttpResponse response = client.execute(post);
-		String resultContent = getResultContent(response);
-	}
 	
 	public void crearUsuarios() throws ClientProtocolException, IOException {
 		System.out.println("UsuarioTest-> Se crean usuarios");
 		
-//		crearLugar();
-//		
-//		String url = BASE_URL + "/lugares/1";
-//		HttpGet request = new HttpGet(url);
-//		HttpResponse response = client.execute(request);
-//		String resultContentPlace = getResultContent(response);
-//		
-//		HttpPost post = new HttpPost(url);
-//		post.setEntity(new StringEntity(resultContentPlace, ContentType.APPLICATION_JSON));
-//		HttpResponse responsePlace = client.execute(post);
+		HttpGet lugarRequest = new HttpGet(BASE_URL + "/lugares/1");
+		HttpResponse responseLugar = client.execute(lugarRequest);
+		String lugar = getResultContent(responseLugar);
 		
-//		String url = BASE_URL + "/lugares";
-//
-//		ObjectMapper mapperPlace = new ObjectMapper();
-//		ObjectNode jsonObjectPlace = mapperPlace.createObjectNode();
-//		jsonObjectPlace.put("nombre", "Pladema");
-//		jsonObjectPlace.put("ciudad", "Tandil");
-//		String jsonStringPlace = jsonObjectPlace.toString();
-//		HttpPost post = new HttpPost(url);
-//		post.setEntity(new StringEntity(jsonStringPlace, ContentType.APPLICATION_JSON));
-//		HttpResponse response = client.execute(post);
-//		String resultContentPlace = getResultContent(response);
-		
-//		Lugar lugar = (Lugar) post.getEntity();
-		
-		Lugar lugar = LugarDAO.getInstance().findById(1);
 		System.out.println(lugar);
 		
-//		String resultPlace = getResultContent(responsePlace);
-//		ObjectMapper mapperPlace = new ObjectMapper();
-//
-//		ObjectNode objectPlace = mapperPlace.createObjectNode();
-//		objectPlace.pojoNode(resultPlace);
-//		ArrayNode autores = jsonObject.putArray("autores");
-//		autores.addPOJO(resultContentUsuario10);
-//		HttpEntity lugar = responsePlace.getEntity();
-		
-//		JSONObject myObject = new JSONObject(responsePlace);
-
-//		Lugar lugar = mapper.readValue(responsePlace.getEntity().getContent(), Lugar.class);
-
-		
-//	    String  type_json=result.getString("type");
-//	    String name_json=result.getString("name");
-//	    String id_json=result.getString("demo");
-//	    JsonObject jObj = new JsonObject();
-//	    jobj.put("id", id_json);
-//	    jobj.put("type", type_json);
-//	    jobj.put("name", name_json);
-//	    jArray.put(jObj);
-		
-//		Lugar lugar = mapperPlace.readValue(responsePlace.getEntity().getContent(), Lugar.class);
-
-//		Lugar lugar = mapperPlace.convertValue(responsePlace, Lugar.class);
-//		ArrayNode lugarTrabajo = objectPlace.putArray("lugar");
-//		lugarTrabajo.addPOJO(responsePlace);
-//		HttpEntity  type_json=responsePlace.getEntity();
-		
-
 		String url = BASE_URL + "/usuarios";
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode jsonObject = mapper.createObjectNode();
 
-		
 		jsonObject.put("dni", "41313351");
 		jsonObject.put("apellido", "Rampoldi");
 		jsonObject.put("nombre", "Santiago");
 		jsonObject.putPOJO("lugar", lugar);
-		
 
 		String jsonString = jsonObject.toString();
 		HttpPost post = new HttpPost(url);
