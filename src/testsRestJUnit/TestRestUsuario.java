@@ -56,8 +56,6 @@ public class TestRestUsuario {
 		HttpResponse responseLugar = client.execute(lugarRequest);
 		String lugar = getResultContent(responseLugar);
 		
-		System.out.println(lugar);
-		
 		String url = BASE_URL + "/usuarios";
 		
 		ObjectMapper mapper = new ObjectMapper();

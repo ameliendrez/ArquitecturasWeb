@@ -103,7 +103,7 @@ public class Usuario {
 			tr += ", trabajos de investigacion = ";
 			for (Trabajo trabajo : this.trabajosInvestigacion) {
 				tr += trabajo.getNombre() + ", ";
-				tr += trabajo.getTipo().getNombre() + ".  ";
+				tr += trabajo.getTipoTrabajo().getNombre() + ".  ";
 			}	
 		}
 
@@ -177,7 +177,7 @@ public class Usuario {
 
 	public boolean addTrabajoInvestigacion(Trabajo trabajo) {
 		if(!this.trabajosPendientes.contains(trabajo) && !this.trabajosEvaluacion.contains(trabajo)) {
-			trabajo.setAutor(this);
+			trabajo.setAutores(this);
 			this.trabajosInvestigacion.add(trabajo);
 			return true;
 		}
@@ -230,8 +230,8 @@ public class Usuario {
 					mismoLugarTrabajo = true;
 			}
 			if(!mismoLugarTrabajo) {
-				Set<Tematica> clavesTrabajo = t.getTemas();
-				if(t.getTipo().getCondicion()) 
+				Set<Tematica> clavesTrabajo = t.getTematicas();
+				if(t.getTipoTrabajo().getCondicion()) 
 					return this.temas.containsAll(clavesTrabajo);
 				else {
 					for(Tematica e: clavesTrabajo) {

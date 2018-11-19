@@ -117,7 +117,7 @@ public class TestRestLugar {
 	}
 
 	public void getLugar() throws ClientProtocolException, IOException {
-		System.out.println("TematicaTest-> Se trae un lugar");
+		System.out.println("LugarTest-> Se trae un lugar");
 
 		String url = BASE_URL + "/lugares/1";
 

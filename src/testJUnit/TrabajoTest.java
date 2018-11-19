@@ -269,13 +269,13 @@ public class TrabajoTest {
 	@Test
 	public void getTipoTrabajo(){
 		System.out.println("TrabajoTest-> Se comprueba el tipo de trabajo correcto del primero");
-		assertEquals("Articulo", trabajoBBDD.getTipo().getNombre());
+		assertEquals("Articulo", trabajoBBDD.getTipoTrabajo().getNombre());
 	}
 	
 	@Test
 	public void getTipoTrabajoErroneo(){
 		System.out.println("TrabajoTest-> Se comprueba el tipo de trabajo incorrecto del primero");
-		assertNotEquals("Poster", trabajoBBDD.getTipo().getNombre());
+		assertNotEquals("Poster", trabajoBBDD.getTipoTrabajo().getNombre());
 	}
 	
 	@Test

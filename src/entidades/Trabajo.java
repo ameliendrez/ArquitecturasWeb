@@ -26,7 +26,7 @@ public class Trabajo {
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private TipoTrabajo tipo;
+	private TipoTrabajo tipoTrabajo;
 
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "trabajosInvestigacion")
 	@Column(nullable = false)
@@ -38,7 +38,7 @@ public class Trabajo {
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false)
-	Set<Tematica>temas;
+	Set<Tematica>tematicas;
 
 	//--------------Constructor--------------
 
@@ -50,21 +50,21 @@ public class Trabajo {
 			this.autores = new HashSet<Usuario>();
 		}
 		this.nombre = nombre;
-		this.tipo = tipo;
-		this.temas = tematicas;
+		this.tipoTrabajo = tipo;
+		this.tematicas = tematicas;
 		this.evaluadores = new HashSet<Usuario>();
 	}
 
 	public Trabajo(String nombre, TipoTrabajo tipo) {
 		this.nombre = nombre;
-		this.tipo = tipo;
-		this.temas = new HashSet<Tematica>();
+		this.tipoTrabajo = tipo;
+		this.tematicas = new HashSet<Tematica>();
 		this.autores = new HashSet<Usuario>();
 		this.evaluadores = new HashSet<Usuario>();
 	}
 
 	public Trabajo() {
-		this.temas = new HashSet<Tematica>();
+		this.tematicas = new HashSet<Tematica>();
 		this.autores = new HashSet<Usuario>();
 		this.evaluadores = new HashSet<Usuario>();
 	}
@@ -81,13 +81,13 @@ public class Trabajo {
 			}	
 		}
 		String t = "";
-		if (!this.temas.isEmpty()) {
-			for (Tematica tematica : this.temas) {
+		if (!this.tematicas.isEmpty()) {
+			for (Tematica tematica : this.tematicas) {
 				t += tematica.getNombre() + ".  ";
 			}	
 		}
 
-		String retorno = "Trabajo [id = " + this.id + ", nombre = " + this.nombre + ", tipo = " + this.tipo.getNombre() 
+		String retorno = "Trabajo [id = " + this.id + ", nombre = " + this.nombre + ", tipo = " + this.tipoTrabajo.getNombre() 
 		+ ", autores = " + a + ", tematicas = " + t + "]";
 		return retorno;
 	}
@@ -102,30 +102,30 @@ public class Trabajo {
 		this.nombre = nombre;
 	}
 
-	public TipoTrabajo getTipo() {
-		return tipo;
+	public TipoTrabajo getTipoTrabajo() {
+		return tipoTrabajo;
 	}
 
-	public void setTipo(TipoTrabajo tipo) {
-		this.tipo = tipo;
+	public void setTipoTrabajo(TipoTrabajo tipoTrabajo) {
+		this.tipoTrabajo = tipoTrabajo;
 	}
 
 	public Set<Usuario> getAutores() {
 		return autores;
 	}
 
-	public void setAutor(Usuario autor) {
+	public void setAutores(Usuario autor) {
 		if (this.autores.size() <= 2) {
 			this.autores.add(autor);	
 		}
 	}
 
-	public Set<Tematica> getTemas() {
-		return temas;
+	public Set<Tematica> getTematicas() {
+		return tematicas;
 	}
 
-	public void setTemas(Tematica tema) {
-		this.temas.add(tema);
+	public void setTematicas(Tematica tema) {
+		this.tematicas.add(tema);
 	}
 
 	public int getId() {
@@ -137,7 +137,7 @@ public class Trabajo {
 	}
 	
 	public int getCantidadTematicas() {
-		return temas.size();
+		return tematicas.size();
 	}
 
 }

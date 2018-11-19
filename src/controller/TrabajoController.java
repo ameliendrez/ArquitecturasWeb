@@ -19,7 +19,7 @@ import exceptions.RecursoDuplicado;
 import exceptions.RecursoNoExiste;
 
 
-@Path("/trabajo")
+@Path("/trabajos")
 public class TrabajoController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON) 

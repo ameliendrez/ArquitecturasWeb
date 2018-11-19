@@ -8,10 +8,12 @@ import org.junit.runners.Suite;
 
 @Suite.SuiteClasses({
 	TestRestLugar.class,
+	TestRestTipoTrabajo.class,
 	TestRestTematica.class,
-	TestRestUsuario.class
+	TestRestUsuario.class,
+	TestRestTrabajo.class
+	
 
-//	TipoTrabajoTest.class,
 //	TrabajoTest.class,
 //	UsuarioTest.class
 })
