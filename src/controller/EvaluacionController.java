@@ -10,49 +10,47 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import dao.EvaluacionDAO;
 import entidades.Evaluacion;
+import exceptions.RecursoDuplicado;
+import exceptions.RecursoNoExiste;
 
 
-@Path("/evaluacions")
+@Path("/evaluaciones")
 public class EvaluacionController {
-
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON) 
 	public List<Evaluacion> getAllEvaluacions() {
-		System.out.println("traigo todos los evaluacions");
 		return EvaluacionDAO.getInstance().findAll();
 	}
-
+	
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Evaluacion getEvaluacionById(@PathParam("id") String msg) {
 		int id = Integer.valueOf(msg);
 		Evaluacion evaluacion = EvaluacionDAO.getInstance().findById(id);
-		if(evaluacion!= null)
+		if(evaluacion!=null)
 			return evaluacion;
 		else
 			throw new RecursoNoExiste(id);
 	}
-
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createEvaluacion(Evaluacion evaluacion) {
-		Evaluacion result = EvaluacionDAO.getInstance().persist(evaluacion);
-		if(result == null) {
+		Evaluacion result= EvaluacionDAO.getInstance().persist(evaluacion);
+		if(result==null) {
 			throw new RecursoDuplicado(evaluacion.getId());
-		}
-		else {
+		}else {
 			return Response.status(201).entity(evaluacion).build();
 		}
 	}
-
+	
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -63,31 +61,17 @@ public class EvaluacionController {
 		else
 			throw new RecursoNoExiste(id);
 	}
-
+	
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateEvaluacion(@PathParam("id") int id,Evaluacion evaluacion) {
-		Evaluacion result = EvaluacionDAO.getInstance().update(id, evaluacion);
+	public Response updateEvaluacion(@PathParam("id") int id, Evaluacion evaluacion) {
+		Evaluacion result= EvaluacionDAO.getInstance().update(id, evaluacion);
 		if(result==null) {
 			throw new RecursoNoExiste(id);
 		}else {
 			return Response.status(200).entity(evaluacion).build();
 		}
-	}
-
-	public class RecursoDuplicado extends WebApplicationException {
-		public RecursoDuplicado(int id) {
-			super(Response.status(Response.Status.CONFLICT)
-					.entity("El recurso con ID "+id+" ya existe").type(MediaType.TEXT_PLAIN).build());
-		}
-	}
-
-	public class RecursoNoExiste extends WebApplicationException {
-		public RecursoNoExiste(int id) {
-			super(Response.status(Response.Status.NOT_FOUND)
-					.entity("El recurso con id "+id+" no fue encontrado").type(MediaType.TEXT_PLAIN).build());
-		}
-	}
+	}	
 }
