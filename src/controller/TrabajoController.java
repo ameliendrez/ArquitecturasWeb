@@ -17,8 +17,12 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 
+import dao.EvaluacionDAO;
 import dao.TrabajoDAO;
+import entidades.Evaluacion;
+import entidades.Tematica;
 import entidades.Trabajo;
+import entidades.Usuario;
 import exceptions.RecursoDuplicado;
 import exceptions.RecursoNoExiste;
 
@@ -30,12 +34,6 @@ public class TrabajoController {
 	public List<Trabajo> getAllTrabajos() {
 		return TrabajoDAO.getInstance().findAll();
 	}
-	
-//	@DELETE
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Response deleteAllTrabajos() {
-//
-//	}
 	
 	@GET
 	@Path("/{id}")
@@ -53,8 +51,8 @@ public class TrabajoController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createTrabajo(Trabajo trabajo) {
-		Trabajo result= TrabajoDAO.getInstance().persist(trabajo);
-		if(result==null) {
+		Trabajo result = TrabajoDAO.getInstance().persist(trabajo);
+		if(result == null) {
 			throw new RecursoDuplicado(trabajo.getId());
 		}else {
 			return Response.status(201).entity(trabajo).build();
@@ -77,11 +75,60 @@ public class TrabajoController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateTrabajo(@PathParam("id") int id, Trabajo trabajo) {
-		Trabajo result= TrabajoDAO.getInstance().update(id, trabajo);
-		if(result==null) {
+		Trabajo result = TrabajoDAO.getInstance().update(id, trabajo);
+		if(result == null) {
 			throw new RecursoNoExiste(id);
 		}else {
 			return Response.status(200).entity(trabajo).build();
 		}
 	}
+	
+	@GET
+	@Path("/{id}/evaluadores")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Usuario> getEvaluadoresDeTrabajoById(@PathParam("id") String msg) {
+		int id = Integer.valueOf(msg);
+		Trabajo trabajo = TrabajoDAO.getInstance().findById(id);
+		if(trabajo != null)
+			return TrabajoDAO.getInstance().getEvaluadores(id);
+		else
+			throw new RecursoNoExiste(id);
+	}
+	
+	@GET
+	@Path("/{id}/autores")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Usuario> getAutoresDeTrabajoById(@PathParam("id") String msg) {
+		int id = Integer.valueOf(msg);
+		Trabajo trabajo = TrabajoDAO.getInstance().findById(id);
+		if(trabajo != null)
+			return TrabajoDAO.getInstance().getAutores(id);
+		else
+			throw new RecursoNoExiste(id);
+	}
+	
+	@GET
+	@Path("/{id}/tematicas")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tematica> getTemasDeTrabajoById(@PathParam("id") String msg) {
+		int id = Integer.valueOf(msg);
+		Trabajo trabajo = TrabajoDAO.getInstance().findById(id);
+		if(trabajo != null)
+			return TrabajoDAO.getInstance().getTemas(id);
+		else
+			throw new RecursoNoExiste(id);
+	}
+	
+	@GET
+	@Path("/{id}/evaluaciones")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Evaluacion> getEvaluacionesDeUnTrabajoById(@PathParam("id") String msg) {
+		int id = Integer.valueOf(msg);
+		Trabajo trabajo = TrabajoDAO.getInstance().findById(id);
+		if(trabajo != null)
+			return TrabajoDAO.getInstance().getEvaluaciones(id);
+		else
+			throw new RecursoNoExiste(id);
+	}
+	
 }

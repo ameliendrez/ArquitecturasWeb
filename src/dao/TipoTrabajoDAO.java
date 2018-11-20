@@ -40,7 +40,7 @@ public class TipoTrabajoDAO extends BaseJpaDAO<TipoTrabajo, Integer> {
 	
 	public void removeAll() {
 		EntityManager entityManager = EMF.createEntityManager();
-		Query query = entityManager.createNativeQuery("DELETE FROM tipotrabajo");
+		Query query = entityManager.createQuery("DELETE FROM TipoTrabajo");
 		entityManager.getTransaction().begin();
 		query.executeUpdate();
 		entityManager.getTransaction().commit();
@@ -51,12 +51,11 @@ public class TipoTrabajoDAO extends BaseJpaDAO<TipoTrabajo, Integer> {
 	public List<TipoTrabajo> findAll() {
 		EntityManager entityManager = EMF.createEntityManager();
 		List<TipoTrabajo>retorno = new ArrayList<TipoTrabajo>();
-		Query query = entityManager.createNativeQuery("SELECT * FROM tipotrabajo", TipoTrabajo.class);
+		Query query = entityManager.createQuery("SELECT t FROM TipoTrabajo t");
 		if (!query.getResultList().isEmpty()) {
 			retorno = query.getResultList();
 			return retorno;
 		}
-		//System.out.println("La consulta no devolvio ningun resultado");
 		throw new UnsupportedOperationException();
 	}
 	
@@ -71,7 +70,7 @@ public class TipoTrabajoDAO extends BaseJpaDAO<TipoTrabajo, Integer> {
 	public boolean delete(int id) {
 		EntityManager entityManager = EMF.createEntityManager();
 		entityManager.getTransaction().begin();
-		Query query = entityManager.createQuery("DELETE FROM TipoTrabajo tt WHERE tt.id = :id");
+		Query query = entityManager.createQuery("DELETE FROM TipoTrabajo t WHERE t.id = :id");
 		query.setParameter("id", id);
 		int deletedCount = query.executeUpdate();
 		entityManager.getTransaction().commit();

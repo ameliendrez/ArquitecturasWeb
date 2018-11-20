@@ -13,7 +13,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import dao.EvaluacionDAO;
 import dao.UsuarioDAO;
+import entidades.Evaluacion;
+import entidades.Tematica;
+import entidades.Trabajo;
 import entidades.Usuario;
 import exceptions.RecursoDuplicado;
 import exceptions.RecursoNoExiste;
@@ -33,7 +37,7 @@ public class UsuarioController {
 	public Usuario getUsuarioById(@PathParam("id") String msg) {
 		int id = Integer.valueOf(msg);
 		Usuario usuario = UsuarioDAO.getInstance().findById(id);
-		if(usuario!=null)
+		if(usuario != null)
 			return usuario;
 		else
 			throw new RecursoNoExiste(id);
@@ -43,8 +47,8 @@ public class UsuarioController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createUsuario(Usuario usuario) {
-		Usuario result= UsuarioDAO.getInstance().persist(usuario);
-		if(result==null) {
+		Usuario result = UsuarioDAO.getInstance().persist(usuario);
+		if(result == null) {
 			throw new RecursoDuplicado(usuario.getDni());
 		}else {
 			return Response.status(201).entity(usuario).build();
@@ -67,11 +71,50 @@ public class UsuarioController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateUsuario(@PathParam("id") int id, Usuario usuario) {
-		Usuario result= UsuarioDAO.getInstance().update(id, usuario);
-		if(result==null) {
+		Usuario result = UsuarioDAO.getInstance().update(id, usuario);
+		if(result == null) {
 			throw new RecursoNoExiste(id);
 		}else {
 			return Response.status(200).entity(usuario).build();
 		}
-	}	
+	}
+	
+	@GET
+	@Path("/{id}/trabajos")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Trabajo> getTrabajosDeUsuarioById(@PathParam("id") String msg) {
+		int id = Integer.valueOf(msg);
+		List<Trabajo>trabajos = UsuarioDAO.getInstance().findAllTrabajosAsignados(id);
+		if(trabajos != null) {
+			System.out.println(trabajos);
+			return trabajos;
+			
+		}else
+			throw new RecursoNoExiste(id);
+	}
+	
+	@GET
+	@Path("/{id}/evaluaciones")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Evaluacion> getEvaluacionesDeUsuarioById(@PathParam("id") String msg) {
+		int id = Integer.valueOf(msg);
+		Usuario usuario = UsuarioDAO.getInstance().findById(id);
+		if(usuario != null)
+			return UsuarioDAO.getInstance().getEvaluaciones(id);
+		else
+			throw new RecursoNoExiste(id);
+	}
+	
+	@GET
+	@Path("/{id}/tematicas")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tematica> getConocimientosDeUsuarioById(@PathParam("id") String msg) {
+		int id = Integer.valueOf(msg);
+		Usuario usuario = UsuarioDAO.getInstance().findById(id);
+		if(usuario != null)
+			return UsuarioDAO.getInstance().conocimientosDeUnUsuario(usuario);
+		else
+			throw new RecursoNoExiste(id);
+	}
+	
 }

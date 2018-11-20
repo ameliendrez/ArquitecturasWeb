@@ -40,7 +40,7 @@ public class LugarDAO extends BaseJpaDAO<Lugar, Integer> {
 
 	public void removeAll() {
 		EntityManager entityManager = EMF.createEntityManager();
-		Query query = entityManager.createNativeQuery("DELETE FROM lugar");
+		Query query = entityManager.createQuery("DELETE FROM Lugar");
 		entityManager.getTransaction().begin();
 		query.executeUpdate();
 		entityManager.getTransaction().commit();
@@ -51,7 +51,7 @@ public class LugarDAO extends BaseJpaDAO<Lugar, Integer> {
 	public List<Lugar> findAll() {
 		EntityManager entityManager = EMF.createEntityManager();
 		List<Lugar>retorno = new ArrayList<Lugar>();
-		Query query = entityManager.createNativeQuery("SELECT * FROM lugar", Lugar.class);
+		Query query = entityManager.createQuery("SELECT l FROM Lugar l");
 		if (!query.getResultList().isEmpty()) {
 			retorno = query.getResultList();
 			return retorno;

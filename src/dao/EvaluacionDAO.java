@@ -1,10 +1,14 @@
 package dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import entidades.EMF;
 import entidades.Evaluacion;
+import entidades.Usuario;
 
 public class EvaluacionDAO extends BaseJpaDAO<Evaluacion, Integer>{
 
@@ -35,16 +39,16 @@ public class EvaluacionDAO extends BaseJpaDAO<Evaluacion, Integer>{
 		entityManager.close();
 		return evaluacion;
 	}
-	
+
 	public void removeAll() {
 		EntityManager entityManager = EMF.createEntityManager();
-		Query query = entityManager.createNativeQuery("DELETE FROM evaluacion");
+		Query query = entityManager.createQuery("DELETE FROM Evaluacion");
 		entityManager.getTransaction().begin();
 		query.executeUpdate();
 		entityManager.getTransaction().commit();
 		entityManager.close();
 	}
-	
+
 	public boolean delete(int id) {
 		EntityManager entityManager = EMF.createEntityManager();
 		entityManager.getTransaction().begin();
@@ -74,6 +78,4 @@ public class EvaluacionDAO extends BaseJpaDAO<Evaluacion, Integer>{
 		}
 	}
 
-	
-	
 }

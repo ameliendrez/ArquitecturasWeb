@@ -16,11 +16,11 @@ public class Tematica {
 	private String nombre;
 	
 	@Column (nullable = false)
-	private Boolean esExperto;
+	private Boolean es_experto;
 
 	public Tematica(String nombre, Boolean esExperto) {
 		this.nombre = nombre;
-		this.esExperto = esExperto;
+		this.es_experto = esExperto;
 	}
 	
 	public Tematica() {
@@ -30,7 +30,7 @@ public class Tematica {
 	public String toString() {
 		String s = "";
 		
-		if (esExperto) { s = "Conocimiento experto"; }
+		if (es_experto) { s = "Conocimiento experto"; }
 		else { s = "Conocimiento general"; }
 		
 		return "Tematica [id = " + this.id + ", nombre = " + this.nombre + ", esExperto = " + s + "]";
@@ -45,11 +45,11 @@ public class Tematica {
 	}
 
 	public Boolean getEsExperto() {
-		return esExperto;
+		return es_experto;
 	}
 
 	public void setEsExperto(Boolean esExperto) {
-		this.esExperto = esExperto;
+		this.es_experto = esExperto;
 	}
 
 	public int getId() {

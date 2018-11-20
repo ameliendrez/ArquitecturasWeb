@@ -6,8 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "tipo_trabajo")
 public class TipoTrabajo {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,14 +19,10 @@ public class TipoTrabajo {
 	private String nombre;
 	
 	@Column(nullable = false)
-	private boolean condEvaluacion;
+	private boolean cond_evaluacion;
 	//Si es poster(0), el evaluador solo debe evaluar un tema. En el caso contrario (1) todos los temas.
 
 	public TipoTrabajo(String nombre) {
-		if (nombre.equals("Poster")) 
-			this.setCondicion(false);
-		else 
-			this.setCondicion(true);
 		this.nombre = nombre;
 	}
 	
@@ -49,11 +47,11 @@ public class TipoTrabajo {
 	}
 	
 	public boolean getCondicion(){
-		return this.condEvaluacion;
+		return this.cond_evaluacion;
 	}
 	
 	public void setCondicion(boolean condicion) {
-		this.condEvaluacion = condicion;
+		this.cond_evaluacion = condicion;
 	}
 
 }

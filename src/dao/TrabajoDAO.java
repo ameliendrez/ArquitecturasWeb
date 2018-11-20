@@ -11,6 +11,8 @@ import javax.persistence.Query;
 
 
 import entidades.EMF;
+import entidades.Evaluacion;
+import entidades.Tematica;
 import entidades.Trabajo;
 import entidades.Usuario;    
 
@@ -47,7 +49,7 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 	
 	public void removeAll() {
 		EntityManager entityManager = EMF.createEntityManager();
-		Query query = entityManager.createNativeQuery("DELETE FROM trabajo");
+		Query query = entityManager.createQuery("DELETE FROM Trabajo");
 		entityManager.getTransaction().begin();
 		query.executeUpdate();
 		entityManager.getTransaction().commit();
@@ -62,7 +64,7 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 
 	public Trabajo getTrabajo(Integer id) {
 		EntityManager entityManager = EMF.createEntityManager();
-		Query query = entityManager.createNativeQuery("SELECT * FROM trabajo WHERE id = :id", Trabajo.class);
+		Query query = entityManager.createQuery("SELECT t FROM Trabajo t WHERE id = :id");
 		query.setParameter("id", id);
 		entityManager.close();
 		return (Trabajo) query.getSingleResult();
@@ -72,15 +74,45 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 	public List<Trabajo> findAll() {
 		EntityManager entityManager = EMF.createEntityManager();
 		List<Trabajo>retorno = new ArrayList<Trabajo>();
-		Query query = entityManager.createNativeQuery("SELECT * FROM trabajo", Trabajo.class);
+		Query query = entityManager.createQuery("SELECT t FROM Trabajo t");
 		if (!query.getResultList().isEmpty()) {
 			retorno = query.getResultList();
 			return retorno;
 		}
-		//System.out.println("La consulta no devolvio ningun resultado");
-		throw new UnsupportedOperationException();
+		return new ArrayList<Trabajo>();
 	}
 	
+	public List<Usuario> getEvaluadores(Integer id) {
+		EntityManager entityManager = EMF.createEntityManager();
+		List<Usuario>retorno = new ArrayList<Usuario>();
+//		String jpql = "SELECT u, e FROM Usuario u, Evaluacion e WHERE e.trabajo = ?1";
+		String jpql = "SELECT u FROM Evaluacion e JOIN e.evaluador u WHERE e.id = :id";
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter("id", id);
+
+		//Query query = entityManager.createNativeQuery("SELECT * FROM trabajo", Trabajo.class);
+		if (!query.getResultList().isEmpty()) {
+			retorno = query.getResultList();
+			return retorno;
+		}
+		return new ArrayList<Usuario>();
+	}
+	
+	public List<Usuario> getAutores(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public List<Tematica> getTemas(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public List<Evaluacion> getEvaluaciones(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+		
 	public int getCantidadTrabajos() {
 		return findAll().size() + 0;
 	}
@@ -101,12 +133,6 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 			return true;
 		else
 			return false;
-//		Trabajo trabajo = this.findById(id);		
-//		if(trabajo != null) {
-//			entityManager.remove(trabajo);
-//			return true;
-//		}
-//		return false;
 	}
 
 	public Trabajo update(int id, Trabajo entity) {
@@ -124,4 +150,5 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 			return entityAux;
 		}
 	}
+
 }

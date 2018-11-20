@@ -44,8 +44,9 @@ public class TestRestUsuario {
 		crearUsuarios();
 		getUsuario();
 		listarUsuarios();
-		//updateTematica();
-		//deleteTematica();
+//		getTrabajos();
+//		getEvaluaciones();
+//		getConocimientos();
 	}
 
 	
@@ -131,7 +132,7 @@ public class TestRestUsuario {
 	}
 
 	public void getUsuario() throws ClientProtocolException, IOException {
-		System.out.println("UsuarioTest-> Se trae una usuario");
+		System.out.println("UsuarioTest-> Se trae un usuario");
 
 		String url = BASE_URL + "/usuarios/36626800";
 
@@ -148,47 +149,61 @@ public class TestRestUsuario {
 		System.out.println("Response Content : " + resultContent);
 
 	}
+	
+	public void getTrabajos() throws ClientProtocolException, IOException {
+		System.out.println("UsuarioTest-> Se traen los trabajos de un usuario");
 
+		String url = BASE_URL + "/usuarios/36626800/trabajos";
 
-	public void updateUsuario() throws ClientProtocolException, IOException {
+		HttpGet request = new HttpGet(url);
 
-//		ObjectMapper mapper = new ObjectMapper();
-//		ObjectNode jsonObject = mapper.createObjectNode();
-//		jsonObject.put("nombre", "Roque");
-//		jsonObject.put("raza", "Callejero");
-//		jsonObject.put("edad", 8);
-//		String jsonString = jsonObject.toString();
-//
-//		String url = BASE_URL + "/perros/1";
-//		HttpPut request = new HttpPut(url);
-//		request.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
-//		HttpResponse response = client.execute(request);
-//
-//		System.out.println("\nPUT "+url);
-//
-//		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-//
-//		String resultContent = getResultContent(response);
-//
-//		System.out.println("Response Content : " + resultContent);
+		HttpResponse response = client.execute(request);
+
+		System.out.println("\nGET " + url);
+
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+		String resultContent = getResultContent(response);
+
+		System.out.println("Response Content : " + resultContent);
 
 	}
+	
+	public void getConocimientos() throws ClientProtocolException, IOException {
+		System.out.println("UsuarioTest-> Se traen los conocimientos o tematicas de un usuario");
 
-	public void deleteUsuario() throws ClientProtocolException, IOException {
+		String url = BASE_URL + "/usuarios/36626800/tematicas";
 
-//		String url = BASE_URL + "/perros/2";
-//
-//		HttpDelete request = new HttpDelete(url);
-//
-//		HttpResponse response = client.execute(request);
-//
-//		System.out.println("\nDELETE "+url);
-//
-//		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-//
-//		String resultContent = getResultContent(response);
-//
-//		System.out.println("Response Content : " + resultContent);
+		HttpGet request = new HttpGet(url);
+
+		HttpResponse response = client.execute(request);
+
+		System.out.println("\nGET " + url);
+
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+		String resultContent = getResultContent(response);
+
+		System.out.println("Response Content : " + resultContent);
+
+	}
+	
+	public void getEvaluaciones() throws ClientProtocolException, IOException {
+		System.out.println("UsuarioTest-> Se traen las evaluaciones de un usuario");
+
+		String url = BASE_URL + "/usuarios/36626800/evaluaciones";
+
+		HttpGet request = new HttpGet(url);
+
+		HttpResponse response = client.execute(request);
+
+		System.out.println("\nGET " + url);
+
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+		String resultContent = getResultContent(response);
+
+		System.out.println("Response Content : " + resultContent);
 
 	}
 

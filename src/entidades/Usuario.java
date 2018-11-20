@@ -41,15 +41,15 @@ public class Usuario {
 			joinColumns = { @JoinColumn(name = "evaluador_id") },
 			inverseJoinColumns = { @JoinColumn(name = "trabajo_id") }
 			)
-	private Set<Trabajo> trabajosEvaluacion;
+	private Set<Trabajo> trabajos_evaluacion;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
-			name = "evaluador_trabajoPendiente",
+			name = "evaluador_trabajo_pendiente",
 			joinColumns = { @JoinColumn(name = "evaluador_id") },
-			inverseJoinColumns = { @JoinColumn(name = "trabajoPendiente_id") }
+			inverseJoinColumns = { @JoinColumn(name = "trabajo_pendiente_id") }
 			)
-	private Set<Trabajo> trabajosPendientes;
+	private Set<Trabajo> trabajos_pendientes;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinColumn
@@ -61,7 +61,7 @@ public class Usuario {
 			joinColumns = { @JoinColumn(name = "autor_id") },
 			inverseJoinColumns = { @JoinColumn(name = "trabajo_id") }
 			)
-	private Set<Trabajo> trabajosInvestigacion;
+	private Set<Trabajo> trabajos_investigacion;
 
 	//--------------Constructor--------------
 
@@ -71,9 +71,9 @@ public class Usuario {
 		this.apellido = apellido;
 		this.lugar = lugar;
 		this.temas = new HashSet<Tematica>();
-		this.trabajosInvestigacion = new HashSet<Trabajo>();
-		this.trabajosPendientes = new HashSet<Trabajo>();
-		this.trabajosEvaluacion = new HashSet<Trabajo>();
+		this.trabajos_investigacion = new HashSet<Trabajo>();
+		this.trabajos_pendientes = new HashSet<Trabajo>();
+		this.trabajos_pendientes = new HashSet<Trabajo>();
 	}
 	
 //	public Usuario(int dni, String nombre, String apellido) {
@@ -89,9 +89,9 @@ public class Usuario {
 
 	public Usuario() {
 		this.temas = new HashSet<Tematica>();
-		this.trabajosInvestigacion = new HashSet<Trabajo>();
-		this.trabajosPendientes = new HashSet<Trabajo>();
-		this.trabajosEvaluacion = new HashSet<Trabajo>();
+		this.trabajos_investigacion = new HashSet<Trabajo>();
+		this.trabajos_pendientes = new HashSet<Trabajo>();
+		this.trabajos_pendientes = new HashSet<Trabajo>();
 	}
 
 	//--------------toString--------------
@@ -99,9 +99,9 @@ public class Usuario {
 	@Override
 	public String toString() {
 		String tr = "";
-		if (!this.trabajosInvestigacion.isEmpty()) {
+		if (!this.trabajos_investigacion.isEmpty()) {
 			tr += ", trabajos de investigacion = ";
-			for (Trabajo trabajo : this.trabajosInvestigacion) {
+			for (Trabajo trabajo : this.trabajos_investigacion) {
 				tr += trabajo.getNombre() + ", ";
 				tr += trabajo.getTipoTrabajo().getNombre() + ".  ";
 			}	
@@ -154,15 +154,15 @@ public class Usuario {
 	}
 
 	public Set<Trabajo> getTrabajosInvestigacion() {
-		return this.trabajosInvestigacion;
+		return this.trabajos_investigacion;
 	}
 
 	public Set<Trabajo> getTrabajosEvaluacion() {
-		return this.trabajosEvaluacion;
+		return this.trabajos_pendientes;
 	}
 
 	public Set<Trabajo> getTrabajosPendientes() {
-		return this.trabajosPendientes;
+		return this.trabajos_pendientes;
 	}
 
 	public void setTema(Tematica t) {
@@ -176,46 +176,46 @@ public class Usuario {
 	//--------------Controles y metodos de clase--------------
 
 	public boolean addTrabajoInvestigacion(Trabajo trabajo) {
-		if(!this.trabajosPendientes.contains(trabajo) && !this.trabajosEvaluacion.contains(trabajo)) {
+		if(!this.trabajos_pendientes.contains(trabajo) && !this.trabajos_pendientes.contains(trabajo)) {
 			trabajo.setAutores(this);
-			this.trabajosInvestigacion.add(trabajo);
+			this.trabajos_investigacion.add(trabajo);
 			return true;
 		}
 		return false;
 	}
 
 	public boolean addTrabajoEvaluacion(Trabajo trabajo) {
-		if(this.trabajosEvaluacion.size() >= 3 ) {
+		if(this.trabajos_pendientes.size() >= 3 ) {
 			return this.addTrabajoPendiente(trabajo);
 		}
 		else {
-			this.trabajosEvaluacion.add(trabajo);
+			this.trabajos_pendientes.add(trabajo);
 			return true;
 		}
 	}
 
 	public boolean addTrabajoPendiente(Trabajo trabajo) {
 		if (this.esEvaluadorApto(trabajo)) {
-			this.trabajosPendientes.add(trabajo);
+			this.trabajos_pendientes.add(trabajo);
 			return true;
 		}
 		return false;
 	}
 
 	public boolean aceptarTrabajo(Trabajo trabajo) {
-		if(this.trabajosPendientes.contains(trabajo)) {
-			this.trabajosPendientes.remove(trabajo);			
+		if(this.trabajos_pendientes.contains(trabajo)) {
+			this.trabajos_pendientes.remove(trabajo);			
 			return this.addTrabajoEvaluacion(trabajo);
 		}
 		return false;
 	}
 
 	public void rechazarTrabajo(Trabajo trabajo) {
-		this.trabajosPendientes.remove(trabajo);
+		this.trabajos_pendientes.remove(trabajo);
 	}
 
 	public boolean calificarTrabajo(Trabajo trabajo, String observacion) {
-		if(this.trabajosEvaluacion.contains(trabajo)) {
+		if(this.trabajos_pendientes.contains(trabajo)) {
 			new Evaluacion(trabajo, this, observacion);
 			return true;
 		}
@@ -223,7 +223,7 @@ public class Usuario {
 	}
 
 	private boolean esEvaluadorApto(Trabajo t) {
-		if	(!this.trabajosInvestigacion.contains(t)) {
+		if	(!this.trabajos_investigacion.contains(t)) {
 			boolean mismoLugarTrabajo = false;
 			for(Usuario u: t.getAutores()) {
 				if(u.getLugar().equals(this.lugar))

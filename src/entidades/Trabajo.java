@@ -3,6 +3,7 @@ package entidades;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,13 +27,13 @@ public class Trabajo {
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private TipoTrabajo tipoTrabajo;
+	private TipoTrabajo tipo_trabajo;
 
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "trabajosInvestigacion")
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "trabajos_investigacion")
 	@Column(nullable = false)
-	Set<Usuario>autores;
+	Set<Usuario> autores;
 
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "trabajosEvaluacion")
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "trabajos_evaluacion")
 	@Column(nullable = false)
 	Set<Usuario>evaluadores;
 
@@ -50,14 +51,14 @@ public class Trabajo {
 			this.autores = new HashSet<Usuario>();
 		}
 		this.nombre = nombre;
-		this.tipoTrabajo = tipo;
+		this.tipo_trabajo = tipo;
 		this.tematicas = tematicas;
 		this.evaluadores = new HashSet<Usuario>();
 	}
 
 	public Trabajo(String nombre, TipoTrabajo tipo) {
 		this.nombre = nombre;
-		this.tipoTrabajo = tipo;
+		this.tipo_trabajo = tipo;
 		this.tematicas = new HashSet<Tematica>();
 		this.autores = new HashSet<Usuario>();
 		this.evaluadores = new HashSet<Usuario>();
@@ -87,7 +88,7 @@ public class Trabajo {
 			}	
 		}
 
-		String retorno = "Trabajo [id = " + this.id + ", nombre = " + this.nombre + ", tipo = " + this.tipoTrabajo.getNombre() 
+		String retorno = "Trabajo [id = " + this.id + ", nombre = " + this.nombre + ", tipo = " + this.tipo_trabajo.getNombre() 
 		+ ", autores = " + a + ", tematicas = " + t + "]";
 		return retorno;
 	}
@@ -103,11 +104,11 @@ public class Trabajo {
 	}
 
 	public TipoTrabajo getTipoTrabajo() {
-		return tipoTrabajo;
+		return tipo_trabajo;
 	}
 
 	public void setTipoTrabajo(TipoTrabajo tipoTrabajo) {
-		this.tipoTrabajo = tipoTrabajo;
+		this.tipo_trabajo = tipoTrabajo;
 	}
 
 	public Set<Usuario> getAutores() {

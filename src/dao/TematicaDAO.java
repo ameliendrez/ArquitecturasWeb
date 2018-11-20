@@ -40,7 +40,7 @@ public class TematicaDAO extends BaseJpaDAO<Tematica, Integer> {
 
 	public void removeAll() {
 		EntityManager entityManager = EMF.createEntityManager();
-		Query query = entityManager.createNativeQuery("DELETE FROM tematica");
+		Query query = entityManager.createQuery("DELETE FROM Tematica");
 		entityManager.getTransaction().begin();
 		query.executeUpdate();
 		entityManager.getTransaction().commit();
@@ -51,7 +51,7 @@ public class TematicaDAO extends BaseJpaDAO<Tematica, Integer> {
 	public List<Tematica> findAll() {
 		EntityManager entityManager = EMF.createEntityManager();
 		List<Tematica>retorno = new ArrayList<Tematica>();
-		Query query = entityManager.createNativeQuery("SELECT * FROM tematica", Tematica.class);
+		Query query = entityManager.createQuery("SELECT t FROM Tematica t");
 		if (!query.getResultList().isEmpty()) {
 			retorno = query.getResultList();
 			return retorno;

@@ -28,8 +28,6 @@ public class TestRestTipoTrabajo {
 		crearTiposTrabajos();
 		getTipoTrabajo();
 		listarTipoTrabajos();
-		//updateTematica();
-		//deleteTematica();
 	}
 
 	public void crearTiposTrabajos() throws ClientProtocolException, IOException {
@@ -40,6 +38,7 @@ public class TestRestTipoTrabajo {
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "Poster");
+		jsonObject.put("condicion", "False");
 		String jsonString = jsonObject.toString();
 		HttpPost post = new HttpPost(url);
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
@@ -52,6 +51,7 @@ public class TestRestTipoTrabajo {
 
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "Articulo");
+		jsonObject.put("condicion", "True");
 		jsonString = jsonObject.toString();
 
 		post = new HttpPost(url);
@@ -65,6 +65,7 @@ public class TestRestTipoTrabajo {
 
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "Resumen");
+		jsonObject.put("condicion", "True");
 		jsonString = jsonObject.toString();
 
 		post = new HttpPost(url);
