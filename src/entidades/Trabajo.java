@@ -116,7 +116,7 @@ public class Trabajo {
 
 	public void setAutores(Usuario autor) {
 		if (this.autores.size() <= 2) {
-			this.autores.add(autor);	
+			this.autores.add(autor);
 		}
 	}
 

@@ -13,6 +13,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+
 import dao.TrabajoDAO;
 import entidades.Trabajo;
 import exceptions.RecursoDuplicado;
@@ -26,6 +30,12 @@ public class TrabajoController {
 	public List<Trabajo> getAllTrabajos() {
 		return TrabajoDAO.getInstance().findAll();
 	}
+	
+//	@DELETE
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response deleteAllTrabajos() {
+//
+//	}
 	
 	@GET
 	@Path("/{id}")

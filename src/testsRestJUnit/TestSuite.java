@@ -14,8 +14,6 @@ import org.junit.runners.Suite;
 	TestRestTrabajo.class
 	
 
-//	TrabajoTest.class,
-//	UsuarioTest.class
 })
 
 public class TestSuite {

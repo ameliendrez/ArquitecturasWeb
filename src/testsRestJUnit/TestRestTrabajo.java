@@ -8,6 +8,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
@@ -18,8 +19,10 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import dao.UsuarioDAO;
+
 public class TestRestTrabajo {
-	
+
 	public final String BASE_URL = "http://localhost:8080/TPE-ARQUITECTURAS/api";
 
 	public final HttpClient client = HttpClientBuilder.create().build();
@@ -31,50 +34,42 @@ public class TestRestTrabajo {
 		listarTrabajos();
 		//updateTematica();
 		//deleteTematica();
+		deleteAll();
+		//Opcional, borrar la Base de Datos
+		//deleteDatabase();
 	}
 
 	public void crearTrabajos() throws ClientProtocolException, IOException {
 		System.out.println("TrabajoTest-> Se crean trabajos");
-		
+
 		HttpGet tipoTrabajoRequest = new HttpGet(BASE_URL + "/tipoTrabajos/1");
 		HttpResponse responseTipoTrabajo = client.execute(tipoTrabajoRequest);
 		String tipoTrabajo = getResultContent(responseTipoTrabajo);
-		
-		System.out.println(tipoTrabajo);
-		
+
 		HttpGet tipoTrabajoRequest2 = new HttpGet(BASE_URL + "/tipoTrabajos/2");
 		HttpResponse responseTipoTrabajo2 = client.execute(tipoTrabajoRequest2);
 		String tipoTrabajo2 = getResultContent(responseTipoTrabajo2);
-		
-		System.out.println(tipoTrabajo2);
 
-		
+
 		HttpGet usuarioRequest = new HttpGet(BASE_URL + "/usuarios/36626800");
 		HttpResponse responseUsuario = client.execute(usuarioRequest);
 		String usuario = getResultContent(responseUsuario);
-		
-		System.out.println(usuario);
 
-		
+
 		HttpGet usuarioRequest2 = new HttpGet(BASE_URL + "/usuarios/41313351");
 		HttpResponse responseUsuario2 = client.execute(usuarioRequest2);
 		String usuario2 = getResultContent(responseUsuario2);
-		
-		System.out.println(usuario2);
-		
+
 		HttpGet tematicaRequest = new HttpGet(BASE_URL + "/tematicas/1");
 		HttpResponse responseTematica = client.execute(tematicaRequest);
 		String tematica = getResultContent(responseTematica);
-		
-		System.out.println(tematica);
-		
+
+
 		HttpGet tematicaRequest2 = new HttpGet(BASE_URL + "/tematicas/2");
 		HttpResponse responseTematica2 = client.execute(tematicaRequest2);
 		String tematica2 = getResultContent(responseTematica2);
 
-		System.out.println(tematica2);
 
-		
 		String url = BASE_URL + "/trabajos";
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -84,8 +79,8 @@ public class TestRestTrabajo {
 		jsonObject.putPOJO("tipoTrabajo", tipoTrabajo);
 		jsonObject.putPOJO("autores", usuario);
 		jsonObject.putPOJO("tematicas", tematica);
-		
-		
+
+
 		String jsonString = jsonObject.toString();
 		HttpPost post = new HttpPost(url);
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
@@ -96,21 +91,7 @@ public class TestRestTrabajo {
 		String resultContent = getResultContent(response);
 		System.out.println("Response Content : " + resultContent);
 
-//		jsonObject = mapper.createObjectNode();
-//		jsonObject.put("nombre", "Programando con phyton");
-//		jsonObject.putPOJO("tipoTrabajo", tipoTrabajo2);
-//		jsonObject.putPOJO("autores", usuario2);
-//		jsonObject.putPOJO("tematicas", tematica2);
-//		jsonString = jsonObject.toString();
-//
-//		post = new HttpPost(url);
-//		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
-//		response = client.execute(post);
-//
-//		System.out.println("\nPOST "+url);
-//		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-//		resultContent = getResultContent(response);
-//		System.out.println("Response Content : " + resultContent);
+
 	}
 
 	private String getResultContent(HttpResponse response) throws IOException {
@@ -165,6 +146,88 @@ public class TestRestTrabajo {
 
 		System.out.println("Response Content : " + resultContent);
 
+	}
+
+	private void deleteAll() {
+		//------------------------Seteo Strings-----------------------------------
+		
+		String urlTrabajo = BASE_URL + "/trabajos/1";
+		
+		String urlUsuario1 = BASE_URL + "/usuarios/36626800";
+		String urlUsuario2 = BASE_URL + "/usuarios/41313351";
+		
+		String urlTipoTrabajo1 = BASE_URL + "/tipoTrabajos/1";
+		String urlTipoTrabajo2 = BASE_URL + "/tipoTrabajos/2";
+		String urlTipoTrabajo3 = BASE_URL + "/tipoTrabajos/3";
+		
+		String urlLugar1 = BASE_URL + "/lugares/1";
+		String urlLugar2 = BASE_URL + "/lugares/2";
+		String urlLugar3 = BASE_URL + "/lugares/3";
+		
+		String urlTematica1 = BASE_URL + "/tematicas/1";
+		String urlTematica2 = BASE_URL + "/tematicas/2";
+		String urlTematica3 = BASE_URL + "/tematicas/3";
+		String urlTematica4 = BASE_URL + "/tematicas/4";
+		String urlTematica5 = BASE_URL + "/tematicas/5";
+		
+		//------------------------Seteo Http Requests-----------------------------------
+		
+		
+		HttpDelete requestTrabajo = new HttpDelete(urlTrabajo);
+		
+		HttpDelete requestUsuario1 = new HttpDelete(urlUsuario1);
+		HttpDelete requestUsuario2 = new HttpDelete(urlUsuario2);
+		
+		HttpDelete requestTipoTrabajo1 = new HttpDelete(urlTipoTrabajo1);
+		HttpDelete requestTipoTrabajo2 = new HttpDelete(urlTipoTrabajo2);
+		HttpDelete requestTipoTrabajo3 = new HttpDelete(urlTipoTrabajo3);
+		
+		HttpDelete requestLugar1 = new HttpDelete(urlLugar1);
+		HttpDelete requestLugar2 = new HttpDelete(urlLugar2);
+		HttpDelete requestLugar3 = new HttpDelete(urlLugar3);
+		
+		HttpDelete requestTematica1 = new HttpDelete(urlTematica1);
+		HttpDelete requestTematica2 = new HttpDelete(urlTematica2);
+		HttpDelete requestTematica3 = new HttpDelete(urlTematica3);
+		HttpDelete requestTematica4 = new HttpDelete(urlTematica4);
+		HttpDelete requestTematica5 = new HttpDelete(urlTematica5);
+
+		
+		//------------------------Ejecuto los Requests-----------------------------------
+		
+		try {
+			client.execute(requestTrabajo);
+			
+			client.execute(requestUsuario1);
+			client.execute(requestUsuario2);
+			
+			client.execute(requestTipoTrabajo1);
+			client.execute(requestTipoTrabajo2);
+			client.execute(requestTipoTrabajo3);
+			
+			client.execute(requestLugar1);
+			client.execute(requestLugar2);
+			client.execute(requestLugar3);
+			
+			client.execute(requestTematica1);
+			client.execute(requestTematica2);
+			client.execute(requestTematica3);
+			client.execute(requestTematica4);
+			client.execute(requestTematica5);
+			
+			System.out.println("\nEliminados correctamente todos los elementos");
+			
+		}  
+		catch (Exception e) {
+			System.out.println("\nError al borrar todos los elementos");
+		}
+
+	}
+	
+	public void deleteDatabase() {
+		UsuarioDAO.getInstance().dropDatabaseCacic();
+		
+		System.out.println("\nBorrada la Base de Datos");
 	}
 
 }
