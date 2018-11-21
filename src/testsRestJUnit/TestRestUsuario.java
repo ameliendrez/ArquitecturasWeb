@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -44,24 +45,32 @@ public class TestRestUsuario {
 		crearUsuarios();
 		getUsuario();
 		listarUsuarios();
-//		getTrabajos();
-//		getEvaluaciones();
-//		getConocimientos();
+		updateUsuario();
+		//		getTrabajos();
+		//		getEvaluaciones();
+		//		getConocimientos();
 	}
 
-	
 	public void crearUsuarios() throws ClientProtocolException, IOException {
-		System.out.println("UsuarioTest-> Se crean usuarios");
-		
+		System.out.println("\nUsuarioTest-> Se crean usuarios");
+
 		HttpGet lugarRequest = new HttpGet(BASE_URL + "/lugares/1");
 		HttpResponse responseLugar = client.execute(lugarRequest);
 		String lugar = getResultContent(responseLugar);
 		
-		String url = BASE_URL + "/usuarios";
+		lugarRequest = new HttpGet(BASE_URL + "/lugares/2");
+		responseLugar = client.execute(lugarRequest);
+		String lugar2 = getResultContent(responseLugar);
 		
+		HttpGet tematicaRequest2 = new HttpGet(BASE_URL + "/tematicas/2");
+		HttpResponse responseTematica2 = client.execute(tematicaRequest2);
+		String tematica2 = getResultContent(responseTematica2);
+
+		String url = BASE_URL + "/usuarios";
+
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode jsonObject = mapper.createObjectNode();
-
+		//----------------------------------------------------------------
 		jsonObject.put("dni", "41313351");
 		jsonObject.put("apellido", "Rampoldi");
 		jsonObject.put("nombre", "Santiago");
@@ -76,11 +85,30 @@ public class TestRestUsuario {
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 		String resultContent = getResultContent(response);
 		System.out.println("Response Content : " + resultContent);
-
+		
+		//----------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
-		jsonObject.put("dni", "36626800");
-		jsonObject.put("apellido", "Meliendrez");
-		jsonObject.put("nombre", "Agustin");
+		jsonObject.put("dni", "27332662");
+		jsonObject.put("apellido", "Ronaldo");
+		jsonObject.put("nombre", "Cristiano");
+		jsonObject.putPOJO("lugar", lugar2);
+
+		jsonString = jsonObject.toString();
+
+		post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		response = client.execute(post);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		resultContent = getResultContent(response);
+		System.out.println("Response Content : " + resultContent);
+
+		//--------------------------------------------------------------------
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("dni", "28003662");
+		jsonObject.put("apellido", "Burton");
+		jsonObject.put("nombre", "Tim");
 		jsonObject.putPOJO("lugar", lugar);
 
 		jsonString = jsonObject.toString();
@@ -93,6 +121,133 @@ public class TestRestUsuario {
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 		resultContent = getResultContent(response);
 		System.out.println("Response Content : " + resultContent);
+
+		//--------------------------------------------------------------------
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("dni", "36626800");
+		jsonObject.put("apellido", "Meliendrez");
+		jsonObject.put("nombre", "Agustin");
+		jsonObject.putPOJO("lugar", lugar2);
+
+		jsonString = jsonObject.toString();
+
+		post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		response = client.execute(post);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		resultContent = getResultContent(response);
+		System.out.println("Response Content : " + resultContent);
+
+		//--------------------------------------------------------------------
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("dni", "22003004");
+		jsonObject.put("apellido", "Messi");
+		jsonObject.put("nombre", "Lionel");
+		jsonObject.putPOJO("lugar", lugar2);
+
+		jsonString = jsonObject.toString();
+
+		post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		response = client.execute(post);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		resultContent = getResultContent(response);
+		System.out.println("Response Content : " + resultContent);
+
+		//--------------------------------------------------------------------
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("dni", "32251631");
+		jsonObject.put("apellido", "Zuckerberg");
+		jsonObject.put("nombre", "Mark");
+		jsonObject.putPOJO("lugar", lugar);
+
+		jsonString = jsonObject.toString();
+
+		post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		response = client.execute(post);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		resultContent = getResultContent(response);
+		System.out.println("Response Content : " + resultContent);
+
+		//--------------------------------------------------------------------
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("dni", "24516673");
+		jsonObject.put("apellido", "Alan");
+		jsonObject.put("nombre", "Turing");
+		jsonObject.putPOJO("lugar", lugar);
+
+		jsonString = jsonObject.toString();
+
+		post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		response = client.execute(post);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		resultContent = getResultContent(response);
+		System.out.println("Response Content : " + resultContent);
+
+		//--------------------------------------------------------------------
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("dni", "23216742");
+		jsonObject.put("apellido", "Cerf");
+		jsonObject.put("nombre", "Vinton");
+		jsonObject.putPOJO("lugar", lugar);
+
+		jsonString = jsonObject.toString();
+
+		post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		response = client.execute(post);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		resultContent = getResultContent(response);
+		System.out.println("Response Content : " + resultContent);
+
+		//--------------------------------------------------------------------
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("dni", "31555124");
+		jsonObject.put("apellido", "Einstein");
+		jsonObject.put("nombre", "Albert");
+		jsonObject.putPOJO("lugar", lugar2);
+
+		jsonString = jsonObject.toString();
+
+		post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		response = client.execute(post);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		resultContent = getResultContent(response);
+		System.out.println("Response Content : " + resultContent);
+
+		//--------------------------------------------------------------------
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("dni", "23556165");
+		jsonObject.put("apellido", "Hawking");
+		jsonObject.put("nombre", "Stephen");
+		jsonObject.putPOJO("lugar", lugar2);
+
+		jsonString = jsonObject.toString();
+
+		post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		response = client.execute(post);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		resultContent = getResultContent(response);
+		System.out.println("Response Content : " + resultContent);
+
 
 	}
 
@@ -111,9 +266,15 @@ public class TestRestUsuario {
 			return "";
 		}
 	}
+	
+	/**
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * Se traen todos los usuarios
+	 */
 
 	public void listarUsuarios() throws ClientProtocolException, IOException {
-		System.out.println("UsuarioTest-> Se traen todos los usuarios");
+		System.out.println("\nUsuarioTest-> Se traen todos los usuarios");
 
 		String url = BASE_URL + "/usuarios";
 
@@ -130,9 +291,15 @@ public class TestRestUsuario {
 		System.out.println("Response Content : " + resultContent);
 
 	}
+	
+	/**
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * Se trae un solo usuario dado un dni
+	 */
 
 	public void getUsuario() throws ClientProtocolException, IOException {
-		System.out.println("UsuarioTest-> Se trae un usuario");
+		System.out.println("\nUsuarioTest-> Se trae un usuario");
 
 		String url = BASE_URL + "/usuarios/36626800";
 
@@ -150,8 +317,14 @@ public class TestRestUsuario {
 
 	}
 	
+	/**
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * Se traen todos los trabajos asignados a un usuario
+	 */
+
 	public void getTrabajos() throws ClientProtocolException, IOException {
-		System.out.println("UsuarioTest-> Se traen los trabajos de un usuario");
+		System.out.println("\nUsuarioTest-> Se traen los trabajos de un usuario");
 
 		String url = BASE_URL + "/usuarios/36626800/trabajos";
 
@@ -169,8 +342,14 @@ public class TestRestUsuario {
 
 	}
 	
+	/**
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * Se traen todos los conocimientos o tematicas que posee un usuario
+	 */
+
 	public void getConocimientos() throws ClientProtocolException, IOException {
-		System.out.println("UsuarioTest-> Se traen los conocimientos o tematicas de un usuario");
+		System.out.println("\nUsuarioTest-> Se traen los conocimientos o tematicas de un usuario");
 
 		String url = BASE_URL + "/usuarios/36626800/tematicas";
 
@@ -188,8 +367,14 @@ public class TestRestUsuario {
 
 	}
 	
+	/**
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * Se traen todas las evaluaciones realizadas por un usuario
+	 */
+
 	public void getEvaluaciones() throws ClientProtocolException, IOException {
-		System.out.println("UsuarioTest-> Se traen las evaluaciones de un usuario");
+		System.out.println("\nUsuarioTest-> Se traen las evaluaciones de un usuario");
 
 		String url = BASE_URL + "/usuarios/36626800/evaluaciones";
 
@@ -205,6 +390,46 @@ public class TestRestUsuario {
 
 		System.out.println("Response Content : " + resultContent);
 
+	}
+	
+	/**
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * Se actualizan los datos de un usuario ya existente
+	 */
+	
+	public void updateUsuario() throws ClientProtocolException, IOException {		
+		System.out.println("\nUsuarioTest-> Se modifican los datos de un usuario");
+
+		
+		HttpGet lugarRequest = new HttpGet(BASE_URL + "/lugares/1");
+		HttpResponse responseLugar = client.execute(lugarRequest);
+		String lugar2 = getResultContent(responseLugar);
+		
+		String url = BASE_URL + "/usuarios/41313351";
+		
+		String dni = "41313351";
+		
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode jsonObject = mapper.createObjectNode();
+		jsonObject.put("dni", dni);
+		jsonObject.put("nombre", "Rodolfo");
+		jsonObject.put("apellido", "Rampoldino");
+		jsonObject.putPOJO("lugar", lugar2);
+		
+		String jsonString = jsonObject.toString();
+
+		HttpPut request = new HttpPut(url);
+		request.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		HttpResponse response = client.execute(request);
+
+		System.out.println("\nPUT "+url);
+
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+		String resultContent = getResultContent(response);
+
+		System.out.println("Response Content : " + resultContent);
 	}
 
 }

@@ -141,7 +141,7 @@ public class UsuarioTest {
 		assertNotNull(usuario1);
 		Usuario usuario2 = new Usuario(39887658, "Vinton", "Cerf", unlp);
 		assertNotNull(usuario2);
-		Usuario usuario3 = new Usuario(10679754, "Albert", "Einsten", uncpba);
+		Usuario usuario3 = new Usuario(10679754, "Albert", "Einstein", uncpba);
 		assertNotNull(usuario3);
 		Usuario usuario4 = new Usuario(16784638, "Steve", "Jobs", unlp);
 		assertNotNull(usuario4);

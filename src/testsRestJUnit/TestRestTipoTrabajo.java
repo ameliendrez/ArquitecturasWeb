@@ -31,7 +31,7 @@ public class TestRestTipoTrabajo {
 	}
 
 	public void crearTiposTrabajos() throws ClientProtocolException, IOException {
-		System.out.println("TipoTrabajoTest-> Se crean tipos de trabajo");
+		System.out.println("\nTipoTrabajoTest-> Se crean tipos de trabajo");
 
 		String url = BASE_URL + "/tipoTrabajos";
 
@@ -95,7 +95,7 @@ public class TestRestTipoTrabajo {
 	}
 
 	public void listarTipoTrabajos() throws ClientProtocolException, IOException {
-		System.out.println("TipoTrabajoTest-> Se traen todos los tipos de trabajos");
+		System.out.println("\nTipoTrabajoTest-> Se traen todos los tipos de trabajos");
 
 		String url = BASE_URL + "/tipoTrabajos";
 
@@ -114,7 +114,7 @@ public class TestRestTipoTrabajo {
 	}
 
 	public void getTipoTrabajo() throws ClientProtocolException, IOException {
-		System.out.println("TipoTrabajoTest-> Se trae un tipo de trabajo");
+		System.out.println("\nTipoTrabajoTest-> Se trae un tipo de trabajo");
 
 		String url = BASE_URL + "/tipoTrabajos/1";
 

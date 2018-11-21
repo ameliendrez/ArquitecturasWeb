@@ -20,8 +20,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import dao.UsuarioDAO;
+import entidades.Tematica;
+import entidades.Usuario;
 
 public class TestRestTrabajo {
+
+//	private static final int OK = 201;
+//	private static final int ERROR = 500;
+//	private static final int NOTFOUND = 404;
 
 	public final String BASE_URL = "http://localhost:8080/TPE-ARQUITECTURAS/api";
 
@@ -33,19 +39,20 @@ public class TestRestTrabajo {
 		getTrabajo();
 		listarTrabajos();
 		listarAutores();
+		asignarEvaluadores();
 		listarEvaluadores();
-		listarTematicas();
-		listarEvaluaciones();
+//		listarTematicas();
+//		listarEvaluaciones();
 
 		//Borrar todas las entradas de la Base de Datos
 		//deleteAll();
 		
-		//Opcional, borrar la Base de Datos
+		//Borrar la Base de Datos
 		//deleteDatabase();
 	}
 
 	public void crearTrabajos() throws ClientProtocolException, IOException {
-		System.out.println("TrabajoTest-> Se crean trabajos");
+		System.out.println("\n\nTrabajoTest-> Se crean trabajos");
 
 		HttpGet tipoTrabajoRequest = new HttpGet(BASE_URL + "/tipoTrabajos/1");
 		HttpResponse responseTipoTrabajo = client.execute(tipoTrabajoRequest);
@@ -79,12 +86,13 @@ public class TestRestTrabajo {
 
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode jsonObject = mapper.createObjectNode();
+		
 
+		//----------------------------------------------------------------------
 		jsonObject.put("nombre", "Desmitificando la IA");
 		jsonObject.putPOJO("tipoTrabajo", tipoTrabajo);
 		jsonObject.putPOJO("autores", usuario);
 		jsonObject.putPOJO("tematicas", tematica);
-
 
 		String jsonString = jsonObject.toString();
 		HttpPost post = new HttpPost(url);
@@ -96,9 +104,121 @@ public class TestRestTrabajo {
 		String resultContent = getResultContent(response);
 		System.out.println("Response Content : " + resultContent);
 
-
+		//----------------------------------------------------------------------
+		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "SOFia");
 		jsonObject.putPOJO("tipoTrabajo", tipoTrabajo2);
+		jsonObject.putPOJO("autores", usuario2);
+		jsonObject.putPOJO("tematicas", tematica2);
+
+		jsonString = jsonObject.toString();
+		post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		response = client.execute(post);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		resultContent = getResultContent(response);
+		System.out.println("Response Content : " + resultContent);
+		
+		//----------------------------------------------------------------------
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("nombre", "Python");
+		jsonObject.putPOJO("tipoTrabajo", tipoTrabajo2);
+		jsonObject.putPOJO("autores", usuario);
+		jsonObject.putPOJO("tematicas", tematica);
+
+
+		jsonString = jsonObject.toString();
+		post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		response = client.execute(post);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		resultContent = getResultContent(response);
+		System.out.println("Response Content : " + resultContent);
+		
+		//----------------------------------------------------------------------
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("nombre", "Java");
+		jsonObject.putPOJO("tipoTrabajo", tipoTrabajo2);
+		jsonObject.putPOJO("autores", usuario2);
+		jsonObject.putPOJO("tematicas", tematica);
+
+
+		jsonString = jsonObject.toString();
+		post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		response = client.execute(post);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		resultContent = getResultContent(response);
+		System.out.println("Response Content : " + resultContent);
+
+		
+		//----------------------------------------------------------------------
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("nombre", "Ruby");
+		jsonObject.putPOJO("tipoTrabajo", tipoTrabajo2);
+		jsonObject.putPOJO("autores", usuario);
+		jsonObject.putPOJO("tematicas", tematica);
+
+
+		jsonString = jsonObject.toString();
+		post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		response = client.execute(post);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		resultContent = getResultContent(response);
+		System.out.println("Response Content : " + resultContent);
+
+		
+		//----------------------------------------------------------------------
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("nombre", "MongoDB");
+		jsonObject.putPOJO("tipoTrabajo", tipoTrabajo2);
+		jsonObject.putPOJO("autores", usuario2);
+		jsonObject.putPOJO("tematicas", tematica);
+
+
+		jsonString = jsonObject.toString();
+		post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		response = client.execute(post);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		resultContent = getResultContent(response);
+		System.out.println("Response Content : " + resultContent);
+
+		
+		//----------------------------------------------------------------------
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("nombre", "Metodos Agiles");
+		jsonObject.putPOJO("tipoTrabajo", tipoTrabajo);
+		jsonObject.putPOJO("autores", usuario);
+		jsonObject.putPOJO("tematicas", tematica2);
+
+
+		jsonString = jsonObject.toString();
+		post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		response = client.execute(post);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		resultContent = getResultContent(response);
+		System.out.println("Response Content : " + resultContent);
+
+		
+		//----------------------------------------------------------------------
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("nombre", "Node Js");
+		jsonObject.putPOJO("tipoTrabajo", tipoTrabajo);
 		jsonObject.putPOJO("autores", usuario2);
 		jsonObject.putPOJO("tematicas", tematica2);
 
@@ -113,6 +233,43 @@ public class TestRestTrabajo {
 		resultContent = getResultContent(response);
 		System.out.println("Response Content : " + resultContent);
 
+		
+		//----------------------------------------------------------------------
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("nombre", "Angular Js");
+		jsonObject.putPOJO("tipoTrabajo", tipoTrabajo);
+		jsonObject.putPOJO("autores", usuario);
+		jsonObject.putPOJO("tematicas", tematica2);
+
+
+		jsonString = jsonObject.toString();
+		post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		response = client.execute(post);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		resultContent = getResultContent(response);
+		System.out.println("Response Content : " + resultContent);
+
+		
+		//----------------------------------------------------------------------Ultimo
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("nombre", "Go");
+		jsonObject.putPOJO("tipoTrabajo", tipoTrabajo);
+		jsonObject.putPOJO("autores", usuario2);
+		jsonObject.putPOJO("tematicas", tematica2);
+
+
+		jsonString = jsonObject.toString();
+		post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		response = client.execute(post);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		resultContent = getResultContent(response);
+		System.out.println("Response Content : " + resultContent);
 
 	}
 
@@ -132,8 +289,14 @@ public class TestRestTrabajo {
 		}
 	}
 
+	/**
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * Se muestran todos los trabajos existentes
+	 */
+	
 	public void listarTrabajos() throws ClientProtocolException, IOException {
-		System.out.println("TrabajoTest-> Se traen todos los trabajos");
+		System.out.println("\n\nTrabajoTest-> Se traen todos los trabajos");
 
 		String url = BASE_URL + "/trabajos";
 
@@ -150,9 +313,15 @@ public class TestRestTrabajo {
 		System.out.println("Response Content : " + resultContent);
 
 	}
+	
+	/**
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * Se trae un solo trabajo dado un id
+	 */
 
 	public void getTrabajo() throws ClientProtocolException, IOException {
-		System.out.println("TrabajoTest-> Se trae un trabajo");
+		System.out.println("\nTrabajoTest-> Se trae un trabajo");
 
 		String url = BASE_URL + "/trabajos/1";
 
@@ -170,8 +339,14 @@ public class TestRestTrabajo {
 
 	}
 
+	/**
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * Se traen todos los autores dado un trabajo
+	 */
+	
 	public void listarAutores() throws ClientProtocolException, IOException {
-		System.out.println("TrabajoTest-> Se listan los autores de un trabajo");
+		System.out.println("\nTrabajoTest-> Se listan los autores de un trabajo");
 
 		String url = BASE_URL + "/trabajos/1/autores";
 
@@ -188,9 +363,15 @@ public class TestRestTrabajo {
 		System.out.println("Response Content : " + resultContent);
 
 	}
+	
+	/**
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * Se traen todos los evaluadores dado un trabajo
+	 */
 
 	public void listarEvaluadores() throws ClientProtocolException, IOException {
-		System.out.println("TrabajoTest-> Se listan los evaluadores de un trabajo");
+		System.out.println("\nTrabajoTest-> Se listan los evaluadores de un trabajo");
 
 		String url = BASE_URL + "/trabajos/1/evaluadores";
 
@@ -208,8 +389,14 @@ public class TestRestTrabajo {
 
 	}
 
+	/**
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * Se traen todas las tematicas dado un trabajo
+	 */
+	
 	public void listarTematicas() throws ClientProtocolException, IOException {
-		System.out.println("TrabajoTest-> Se listan las tematicas de un trabajo");
+		System.out.println("\nTrabajoTest-> Se listan las tematicas de un trabajo");
 
 		String url = BASE_URL + "/trabajos/1/tematicas";
 
@@ -226,9 +413,15 @@ public class TestRestTrabajo {
 		System.out.println("Response Content : " + resultContent);
 
 	}
+	
+	/**
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * Se traen todas las evaluaciones dado un trabajo
+	 */
 
 	public void listarEvaluaciones() throws ClientProtocolException, IOException {
-		System.out.println("TrabajoTest-> Se listan las evaluaciones de un trabajo");
+		System.out.println("\nTrabajoTest-> Se listan las evaluaciones de un trabajo");
 
 		String url = BASE_URL + "/trabajos/1/evaluaciones";
 
@@ -244,6 +437,33 @@ public class TestRestTrabajo {
 
 		System.out.println("Response Content : " + resultContent);
 
+	}
+	
+	/**
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * Se asignan evaluadores a un trabajo determinado
+	 */
+	
+	public void asignarEvaluadores() throws ClientProtocolException, IOException {
+		System.out.println("\nTrabajoTest-> Se asignan evaluadores a un trabajo");
+		
+		String url = BASE_URL + "/usuarios/asignar/41313351/7";
+		
+		HttpPost post = new HttpPost(url);
+		
+		post.setEntity(new StringEntity("", ContentType.APPLICATION_JSON));
+		
+		HttpResponse response = client.execute(post);
+		
+		System.out.println("\nPOST " + url);
+
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+		String resultContent = getResultContent(response);
+
+		System.out.println("Response Content : " + resultContent);
+		
 	}
 
 

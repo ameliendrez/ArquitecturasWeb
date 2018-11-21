@@ -70,11 +70,6 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		EntityManager entityManager = EMF.createEntityManager();
 		Usuario user = this.findById(id);
 		if(user != null) {
-//			Query query = entityManager.createNativeQuery(
-//					"SELECT t.* FROM tematica t "
-//							+ "JOIN usuario_tematica u ON t.id = u.temas_id "
-//							+ "WHERE u.usuario_dni = :id", Tematica.class);
-			
 			Query query = entityManager.createQuery(
 					"SELECT t FROM Tematica t, Usuario u WHERE u.dni = :id AND t MEMBER OF u.temas");
 			
@@ -93,13 +88,9 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		EntityManager entityManager = EMF.createEntityManager();
 		Usuario user = this.findById(id);
 		if(user != null) {
-//			Query query = entityManager.createNativeQuery(
-//					"SELECT t.* FROM trabajo t "
-//							+ "JOIN evaluador_trabajo et ON t.id = et.trabajo_id "
-//							+ "WHERE et.evaluador_id = :id", Trabajo.class);
-			
 			Query query = entityManager.createQuery(
 					"SELECT t FROM Trabajo t, Usuario u WHERE u.dni = :id AND t MEMBER OF u.trabajos_evaluacion");
+			
 			query.setParameter("id", id);
 			if (!query.getResultList().isEmpty()) {
 				return query.getResultList();
@@ -112,13 +103,9 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		EntityManager entityManager = EMF.createEntityManager();
 		Usuario user = this.findById(id);
 		if(user != null) {
-//			Query query = entityManager.createNativeQuery(
-//					"SELECT t.* FROM trabajo t "
-//							+ "JOIN evaluador_trabajoPendiente etp ON t.id = etp.trabajoPendiente_id "
-//							+ "WHERE etp.evaluador_id = :id", Trabajo.class);
-			
 			Query query = entityManager.createQuery(
 					"SELECT t FROM Trabajo t, Usuario u WHERE u.dni = :id AND t MEMBER OF u.trabajos_pendientes");
+			
 			query.setParameter("id", id);
 			if (!query.getResultList().isEmpty()) {
 				entityManager.close();
@@ -141,19 +128,14 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		EntityManager entityManager = EMF.createEntityManager();
 		Usuario user = this.findById(id);
 		if(user != null) {
-//			Query query = entityManager.createNativeQuery(
-//					"SELECT t.* FROM trabajo t "
-//							+ "JOIN autor_trabajo et ON t.id = et.trabajo_id "
-//							+ "WHERE et.autor_id = :id", Trabajo.class);
-			
 			Query query = entityManager.createQuery(
 					"SELECT t FROM Trabajo t, Usuario u WHERE u.dni = :id AND t MEMBER OF u.trabajos_investigacion");
+			
 			query.setParameter("id", id);
 			if (!query.getResultList().isEmpty()) {
 				return query.getResultList();
 			}
 		}
-		//System.out.println("La consulta no devolvio ningun resultado");
 		return new ArrayList<Trabajo>();
 	}
 
@@ -165,7 +147,6 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 			retorno = query.getResultList();
 			return retorno;
 		}
-		//System.out.println("La consulta no devolvio ningun resultado");
 		throw new UnsupportedOperationException();
 	}
 
@@ -181,14 +162,9 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		EntityManager entityManager = EMF.createEntityManager();
 		Usuario user = this.findById(id);
 		if(user != null) {
-//			Query query = entityManager.createNativeQuery(
-//					"SELECT t.* FROM trabajo t "
-//							+ "JOIN evaluacion e ON t.id = e.trabajo_id "
-//							+ "WHERE e.evaluador_dni = :id AND e.fecha >= :desde "
-//							+ "AND e.fecha <= :hasta", Trabajo.class);
-			
 			Query query = entityManager.createQuery(
 					"SELECT t FROM Trabajo t JOIN Evaluacion e WHERE e.evaluador = :id AND e.fecha >= :desde AND e.fecha <= :hasta");
+			
 			query.setParameter("id", id);
 			query.setParameter("desde", desde);
 			query.setParameter("hasta", hasta);
@@ -196,7 +172,6 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 				return query.getResultList();
 			}
 		}
-		//System.out.println("La consulta no devolvio ningun resultado");
 		return new ArrayList<Trabajo>();
 	}
 
@@ -263,7 +238,6 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		} else {
 			entityManager.getTransaction().begin();
 			entityAux.setNombre(entity.getNombre());
-			//TO DO
 			entityManager.getTransaction().commit();
 			entityManager.close();
 			return entityAux;
@@ -292,6 +266,33 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		entityManager.close();
 
 		return (ArrayList<Evaluacion>) resultados;
+	}
+
+	public Boolean addTrabajo(Integer id_usuario, Integer id_trabajo) {
+		EntityManager entityManager = EMF.createEntityManager();
+		Usuario usuario = entityManager.find(Usuario.class, id_usuario);
+		Trabajo trabajo = entityManager.find(Trabajo.class,id_trabajo);
+
+		if(trabajo == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("El trabajo no existe");
+		}	
+
+		if(usuario == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("El usuario no existe");	
+		}
+
+		if (!usuario.esEvaluadorApto(trabajo)) {
+			entityManager.close();
+			throw new UnsupportedOperationException("El revisor no es apto");	
+		}
+
+		entityManager.getTransaction().begin();
+		usuario.addTrabajoPendiente(trabajo);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return true;
 	}
 
 }

@@ -75,17 +75,6 @@ public class Usuario {
 		this.trabajos_pendientes = new HashSet<Trabajo>();
 		this.trabajos_pendientes = new HashSet<Trabajo>();
 	}
-	
-//	public Usuario(int dni, String nombre, String apellido) {
-//		this.dni = dni;
-//		this.nombre = nombre;
-//		this.apellido = apellido;
-//		this.lugar = new Lugar();
-//		this.temas = new HashSet<Tematica>();
-//		this.trabajosInvestigacion = new HashSet<Trabajo>();
-//		this.trabajosPendientes = new HashSet<Trabajo>();
-//		this.trabajosEvaluacion = new HashSet<Trabajo>();
-//	}
 
 	public Usuario() {
 		this.temas = new HashSet<Tematica>();
@@ -222,7 +211,7 @@ public class Usuario {
 		return false;
 	}
 
-	private boolean esEvaluadorApto(Trabajo t) {
+	public boolean esEvaluadorApto(Trabajo t) {
 		if	(!this.trabajos_investigacion.contains(t)) {
 			boolean mismoLugarTrabajo = false;
 			for(Usuario u: t.getAutores()) {

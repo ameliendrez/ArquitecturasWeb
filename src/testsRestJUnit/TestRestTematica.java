@@ -34,7 +34,7 @@ public class TestRestTematica {
 	}
 
 	public void crearTemas() throws ClientProtocolException, IOException {
-		System.out.println("TematicaTest-> Se crean tematicas");
+		System.out.println("\nTematicaTest-> Se crean tematicas");
 
 		String url = BASE_URL + "/tematicas";
 
@@ -127,7 +127,7 @@ public class TestRestTematica {
 	}
 
 	public void listarTematicas() throws ClientProtocolException, IOException {
-		System.out.println("TematicaTest-> Se traen todos las tematicas");
+		System.out.println("\nTematicaTest-> Se traen todos las tematicas");
 
 		String url = BASE_URL + "/tematicas";
 
@@ -146,7 +146,7 @@ public class TestRestTematica {
 	}
 
 	public void getTematica() throws ClientProtocolException, IOException {
-		System.out.println("TematicaTest-> Se trae una tematica");
+		System.out.println("\nTematicaTest-> Se trae una tematica");
 
 		String url = BASE_URL + "/tematicas/1";
 
