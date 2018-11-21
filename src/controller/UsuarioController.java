@@ -13,7 +13,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import dao.EvaluacionDAO;
 import dao.UsuarioDAO;
 import entidades.Evaluacion;
 import entidades.Tematica;
@@ -128,7 +127,7 @@ public class UsuarioController {
 			Usuario usuario = UsuarioDAO.getInstance().findById(idUsuario);
 			return Response.status(201).entity(usuario).build();
 		}
-		throw new Exception("Ocurrio un problema durante la asignacion del Trabajo con id: "+idTrabajo+" al usuario con id: "+idUsuario);
+		throw new Exception("Ocurrio un problema durante la asignacion del Trabajo con id: " + idTrabajo + " al usuario con id: " + idUsuario);
 	}
 
 }

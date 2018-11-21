@@ -1,38 +1,26 @@
 package testsRestJUnit;
 
-import static org.junit.Assert.assertNotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import dao.LugarDAO;
-import dao.TematicaDAO;
-import dao.UsuarioDAO;
-import entidades.Lugar;
-import entidades.Tematica;
-import entidades.Usuario;
 
 public class TestRestUsuario {
 
@@ -46,9 +34,9 @@ public class TestRestUsuario {
 		getUsuario();
 		listarUsuarios();
 		updateUsuario();
-		//		getTrabajos();
-		//		getEvaluaciones();
-		//		getConocimientos();
+		getTrabajos();
+//		getEvaluaciones();
+		getConocimientos();
 	}
 
 	public void crearUsuarios() throws ClientProtocolException, IOException {
@@ -57,11 +45,15 @@ public class TestRestUsuario {
 		HttpGet lugarRequest = new HttpGet(BASE_URL + "/lugares/1");
 		HttpResponse responseLugar = client.execute(lugarRequest);
 		String lugar = getResultContent(responseLugar);
-		
+
 		lugarRequest = new HttpGet(BASE_URL + "/lugares/2");
 		responseLugar = client.execute(lugarRequest);
 		String lugar2 = getResultContent(responseLugar);
 		
+		HttpGet tematicaRequest = new HttpGet(BASE_URL + "/tematicas/1");
+		HttpResponse responseTematica = client.execute(tematicaRequest);
+		String tematica = getResultContent(responseTematica);
+
 		HttpGet tematicaRequest2 = new HttpGet(BASE_URL + "/tematicas/2");
 		HttpResponse responseTematica2 = client.execute(tematicaRequest2);
 		String tematica2 = getResultContent(responseTematica2);
@@ -76,6 +68,10 @@ public class TestRestUsuario {
 		jsonObject.put("nombre", "Santiago");
 		jsonObject.putPOJO("lugar", lugar);
 
+		ArrayNode temas = jsonObject.putArray("temas");
+		temas.addPOJO(tematica2);
+		jsonObject.putPOJO("temas", temas);
+
 		String jsonString = jsonObject.toString();
 		HttpPost post = new HttpPost(url);
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
@@ -85,7 +81,7 @@ public class TestRestUsuario {
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 		String resultContent = getResultContent(response);
 		System.out.println("Response Content : " + resultContent);
-		
+
 		//----------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("dni", "27332662");
@@ -128,6 +124,10 @@ public class TestRestUsuario {
 		jsonObject.put("apellido", "Meliendrez");
 		jsonObject.put("nombre", "Agustin");
 		jsonObject.putPOJO("lugar", lugar2);
+		
+		temas.addPOJO(tematica);
+		jsonObject.putPOJO("temas", temas);
+		//TODO
 
 		jsonString = jsonObject.toString();
 
@@ -266,7 +266,7 @@ public class TestRestUsuario {
 			return "";
 		}
 	}
-	
+
 	/**
 	 * @throws ClientProtocolException
 	 * @throws IOException
@@ -291,7 +291,7 @@ public class TestRestUsuario {
 		System.out.println("Response Content : " + resultContent);
 
 	}
-	
+
 	/**
 	 * @throws ClientProtocolException
 	 * @throws IOException
@@ -316,7 +316,7 @@ public class TestRestUsuario {
 		System.out.println("Response Content : " + resultContent);
 
 	}
-	
+
 	/**
 	 * @throws ClientProtocolException
 	 * @throws IOException
@@ -341,7 +341,7 @@ public class TestRestUsuario {
 		System.out.println("Response Content : " + resultContent);
 
 	}
-	
+
 	/**
 	 * @throws ClientProtocolException
 	 * @throws IOException
@@ -366,7 +366,7 @@ public class TestRestUsuario {
 		System.out.println("Response Content : " + resultContent);
 
 	}
-	
+
 	/**
 	 * @throws ClientProtocolException
 	 * @throws IOException
@@ -391,32 +391,32 @@ public class TestRestUsuario {
 		System.out.println("Response Content : " + resultContent);
 
 	}
-	
+
 	/**
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 * Se actualizan los datos de un usuario ya existente
 	 */
-	
+
 	public void updateUsuario() throws ClientProtocolException, IOException {		
 		System.out.println("\nUsuarioTest-> Se modifican los datos de un usuario");
 
-		
+
 		HttpGet lugarRequest = new HttpGet(BASE_URL + "/lugares/1");
 		HttpResponse responseLugar = client.execute(lugarRequest);
 		String lugar2 = getResultContent(responseLugar);
-		
+
 		String url = BASE_URL + "/usuarios/41313351";
-		
+
 		String dni = "41313351";
-		
+
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode jsonObject = mapper.createObjectNode();
 		jsonObject.put("dni", dni);
 		jsonObject.put("nombre", "Rodolfo");
 		jsonObject.put("apellido", "Rampoldino");
 		jsonObject.putPOJO("lugar", lugar2);
-		
+
 		String jsonString = jsonObject.toString();
 
 		HttpPut request = new HttpPut(url);

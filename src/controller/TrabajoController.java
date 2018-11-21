@@ -13,11 +13,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-
-import dao.EvaluacionDAO;
 import dao.TrabajoDAO;
 import entidades.Evaluacion;
 import entidades.Tematica;
@@ -68,19 +63,6 @@ public class TrabajoController {
 			return Response.status(200).build();
 		else
 			throw new RecursoNoExiste(id);
-	}
-	
-	@PUT
-	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateTrabajo(@PathParam("id") int id, Trabajo trabajo) {
-		Trabajo result = TrabajoDAO.getInstance().update(id, trabajo);
-		if(result == null) {
-			throw new RecursoNoExiste(id);
-		}else {
-			return Response.status(200).entity(trabajo).build();
-		}
 	}
 	
 	@GET

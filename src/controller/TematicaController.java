@@ -61,16 +61,4 @@ public class TematicaController {
 			throw new RecursoNoExiste(id);
 	}
 	
-	@PUT
-	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateTema(@PathParam("id") int id, Tematica tema) {
-		Tematica result= TematicaDAO.getInstance().update(id, tema);
-		if(result==null) {
-			throw new RecursoNoExiste(id);
-		}else {
-			return Response.status(200).entity(tema).build();
-		}
-	}	
 }

@@ -161,6 +161,14 @@ public class Usuario {
 	public Set<Tematica> getTemas() {
 		return this.temas;
 	}
+	
+	public void setTrabajos_investigacion(Trabajo trabajo) {
+		if(!this.trabajos_pendientes.contains(trabajo) && !this.trabajos_pendientes.contains(trabajo)) {
+			trabajo.setAutores(this);
+			this.trabajos_investigacion.add(trabajo);
+		}
+	}
+
 
 	//--------------Controles y metodos de clase--------------
 

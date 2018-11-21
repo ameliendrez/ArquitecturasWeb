@@ -85,12 +85,11 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 	public List<Usuario> getEvaluadores(Integer id) {
 		EntityManager entityManager = EMF.createEntityManager();
 		List<Usuario>retorno = new ArrayList<Usuario>();
-//		String jpql = "SELECT u, e FROM Usuario u, Evaluacion e WHERE e.trabajo = ?1";
-		String jpql = "SELECT u FROM Evaluacion e JOIN e.evaluador u WHERE e.id = :id";
+		String jpql = "SELECT u FROM Trabajo t, Usuario u WHERE t.id = :id AND u MEMBER OF t.evaluadores";
+//		String jpql = "SELECT u FROM Evaluacion e JOIN e.evaluador u WHERE e.trabajo.id = :id";
 		Query query = entityManager.createQuery(jpql);
 		query.setParameter("id", id);
 
-		//Query query = entityManager.createNativeQuery("SELECT * FROM trabajo", Trabajo.class);
 		if (!query.getResultList().isEmpty()) {
 			retorno = query.getResultList();
 			return retorno;
@@ -99,18 +98,45 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 	}
 	
 	public List<Usuario> getAutores(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager entityManager = EMF.createEntityManager();
+		List<Usuario>retorno = new ArrayList<Usuario>();
+		String jpql = "SELECT u FROM Trabajo t, Usuario u WHERE t.id = :id AND u MEMBER OF t.autores";
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter("id", id);
+
+		if (!query.getResultList().isEmpty()) {
+			retorno = query.getResultList();
+			return retorno;
+		}
+		return new ArrayList<Usuario>();
 	}
 	
 	public List<Tematica> getTemas(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager entityManager = EMF.createEntityManager();
+		List<Tematica>retorno = new ArrayList<Tematica>();
+		String jpql = "SELECT te FROM Trabajo t, Tematica te WHERE t.id = :id AND te MEMBER OF t.tematicas";
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter("id", id);
+
+		if (!query.getResultList().isEmpty()) {
+			retorno = query.getResultList();
+			return retorno;
+		}
+		return new ArrayList<Tematica>();
 	}
 	
 	public List<Evaluacion> getEvaluaciones(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager entityManager = EMF.createEntityManager();
+		List<Evaluacion>retorno = new ArrayList<Evaluacion>();
+		String jpql = "SELECT e FROM Evaluacion e, Trabajo t WHERE t.id = :id AND t MEMBER OF e.trabajo";
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter("id", id);
+
+		if (!query.getResultList().isEmpty()) {
+			retorno = query.getResultList();
+			return retorno;
+		}
+		return new ArrayList<Evaluacion>();
 	}
 		
 	public int getCantidadTrabajos() {
@@ -133,22 +159,6 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 			return true;
 		else
 			return false;
-	}
-
-	public Trabajo update(int id, Trabajo entity) {
-		EntityManager entityManager = EMF.createEntityManager();
-		Trabajo entityAux = entityManager.find(Trabajo.class, id);
-		if (entityAux == null) {
-			entityManager.close();
-			return null;
-		} else {
-			entityManager.getTransaction().begin();
-			entityAux.setNombre(entity.getNombre());
-			//TO DO
-			entityManager.getTransaction().commit();
-			entityManager.close();
-			return entityAux;
-		}
 	}
 
 }

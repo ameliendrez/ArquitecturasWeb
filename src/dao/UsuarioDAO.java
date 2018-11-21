@@ -116,7 +116,7 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		return new ArrayList<Trabajo>();
 	}
 
-	public List<Trabajo> findAllTrabajosAsignados(Integer id){
+	public List<Trabajo> findAllTrabajosAsignados(Integer id) {
 		//Consideramos a todos los trabajos asignados como los trabajos a evaluar y los trabajos pendientes
 		ArrayList<Trabajo> retorno = new ArrayList<Trabajo>();
 		retorno.addAll(this.findAllTrabajosEnEvaluacion(id));
@@ -238,6 +238,8 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		} else {
 			entityManager.getTransaction().begin();
 			entityAux.setNombre(entity.getNombre());
+			entityAux.setApellido(entity.getApellido());
+			entityAux.setLugar(entity.getLugar());
 			entityManager.getTransaction().commit();
 			entityManager.close();
 			return entityAux;
@@ -290,6 +292,8 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 
 		entityManager.getTransaction().begin();
 		usuario.addTrabajoPendiente(trabajo);
+		usuario.aceptarTrabajo(trabajo);
+		trabajo.setEvaluadores(usuario);
 		entityManager.getTransaction().commit();
 		entityManager.close();
 		return true;

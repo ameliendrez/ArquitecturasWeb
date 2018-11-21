@@ -17,11 +17,10 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import dao.UsuarioDAO;
-import entidades.Tematica;
-import entidades.Usuario;
 
 public class TestRestTrabajo {
 
@@ -41,7 +40,7 @@ public class TestRestTrabajo {
 		listarAutores();
 		asignarEvaluadores();
 		listarEvaluadores();
-//		listarTematicas();
+		listarTematicas();
 //		listarEvaluaciones();
 
 		//Borrar todas las entradas de la Base de Datos
@@ -202,6 +201,12 @@ public class TestRestTrabajo {
 		jsonObject.putPOJO("tipoTrabajo", tipoTrabajo);
 		jsonObject.putPOJO("autores", usuario);
 		jsonObject.putPOJO("tematicas", tematica2);
+		jsonObject.putPOJO("evaluadores", usuario2);
+		//TODO
+		
+//		ArrayNode autores = jsonObject.putArray("autores");
+//		autores.addPOJO(usuario);
+//		jsonObject.putPOJO("autores", autores);
 
 
 		jsonString = jsonObject.toString();
@@ -373,7 +378,7 @@ public class TestRestTrabajo {
 	public void listarEvaluadores() throws ClientProtocolException, IOException {
 		System.out.println("\nTrabajoTest-> Se listan los evaluadores de un trabajo");
 
-		String url = BASE_URL + "/trabajos/1/evaluadores";
+		String url = BASE_URL + "/trabajos/7/evaluadores";
 
 		HttpGet request = new HttpGet(url);
 
@@ -423,7 +428,7 @@ public class TestRestTrabajo {
 	public void listarEvaluaciones() throws ClientProtocolException, IOException {
 		System.out.println("\nTrabajoTest-> Se listan las evaluaciones de un trabajo");
 
-		String url = BASE_URL + "/trabajos/1/evaluaciones";
+		String url = BASE_URL + "/trabajos/7/evaluaciones";
 
 		HttpGet request = new HttpGet(url);
 

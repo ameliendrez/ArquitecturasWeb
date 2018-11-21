@@ -3,7 +3,6 @@ package entidades;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,11 +34,11 @@ public class Trabajo {
 
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "trabajos_evaluacion")
 	@Column(nullable = false)
-	Set<Usuario>evaluadores;
+	Set<Usuario> evaluadores;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false)
-	Set<Tematica>tematicas;
+	Set<Tematica> tematicas;
 
 	//--------------Constructor--------------
 
@@ -132,13 +131,23 @@ public class Trabajo {
 	public int getId() {
 		return id;
 	}
-	
+
 	public int getCantidadAutores() {
 		return autores.size();
 	}
-	
+
 	public int getCantidadTematicas() {
 		return tematicas.size();
+	}
+
+	public Set<Usuario> getEvaluadores() {
+		return evaluadores;
+	}
+
+	public void setEvaluadores(Usuario evaluador) {
+		if (this.evaluadores.size() <= 2) {
+			this.evaluadores.add(evaluador);
+		}
 	}
 
 }

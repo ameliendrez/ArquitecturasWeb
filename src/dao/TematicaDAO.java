@@ -82,20 +82,4 @@ public class TematicaDAO extends BaseJpaDAO<Tematica, Integer> {
 			return false;
 	}
 
-	public Tematica update(int id, Tematica entity) {
-		EntityManager entityManager = EMF.createEntityManager();
-		Tematica entityAux = entityManager.find(Tematica.class, id);
-		if (entityAux == null) {
-			entityManager.close();
-			return null;
-		} else {
-			entityManager.getTransaction().begin();
-			entityAux.setNombre(entity.getNombre());
-			//TO DO
-			entityManager.getTransaction().commit();
-			entityManager.close();
-			return entityAux;
-		}
-	}
-
 }
