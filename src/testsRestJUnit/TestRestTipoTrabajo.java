@@ -1,5 +1,7 @@
 package testsRestJUnit;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,9 +21,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class TestRestTipoTrabajo {
+	
+	private static final int OK = 201;
+	private static final int ERROR = 500;
+	
 	public final String BASE_URL = "http://localhost:8080/TPE-ARQUITECTURAS/api";
 
-	public final HttpClient client = HttpClientBuilder.create().build();
+	public HttpClient client = HttpClientBuilder.create().build();
+	
+	private void resetHttpClient() {
+		this.client = HttpClientBuilder.create().build();
+	}
 
 	@Test
 	public void testRESTInterface() throws ClientProtocolException, IOException {
@@ -44,10 +54,9 @@ public class TestRestTipoTrabajo {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		HttpResponse response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		String resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+		
+		this.resetHttpClient();
 
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "Articulo");
@@ -58,10 +67,9 @@ public class TestRestTipoTrabajo {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+		
+		this.resetHttpClient();
 
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "Resumen");
@@ -72,10 +80,9 @@ public class TestRestTipoTrabajo {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+		
+		this.resetHttpClient();
 	}
 
 	private String getResultContent(HttpResponse response) throws IOException {
@@ -103,14 +110,9 @@ public class TestRestTipoTrabajo {
 
 		HttpResponse response = client.execute(request);
 
-		System.out.println("\nGET " + url);
-
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-		String resultContent = getResultContent(response);
-
-		System.out.println("Response Content : " + resultContent);
-
+		assertEquals(200, response.getStatusLine().getStatusCode());
+		
+		this.resetHttpClient();
 	}
 
 	public void getTipoTrabajo() throws ClientProtocolException, IOException {
@@ -122,14 +124,9 @@ public class TestRestTipoTrabajo {
 
 		HttpResponse response = client.execute(request);
 
-		System.out.println("\nGET " + url);
-
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-		String resultContent = getResultContent(response);
-
-		System.out.println("Response Content : " + resultContent);
-
+		assertEquals(200, response.getStatusLine().getStatusCode());
+		
+		this.resetHttpClient();
 	}
 
 }

@@ -46,7 +46,7 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 		entityManager.close();
 		return trabajo;
 	}
-	
+
 	public void removeAll() {
 		EntityManager entityManager = EMF.createEntityManager();
 		Query query = entityManager.createQuery("DELETE FROM Trabajo");
@@ -58,7 +58,9 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 
 	public Set<Usuario> evaluadoresAsignables(Trabajo t) {
 		Set<Usuario> retorno = new HashSet<Usuario>();
-		//Falta implementar la evaluacion de que usuarios son asignables para los trabajos
+		EntityManager entityManager = EMF.createEntityManager();
+		Query query = entityManager.createQuery("SELECT u FROM Usuario u");
+		entityManager.close();
 		return retorno;
 	}
 
@@ -69,7 +71,7 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 		entityManager.close();
 		return (Trabajo) query.getSingleResult();
 	}
-	
+
 	@Override
 	public List<Trabajo> findAll() {
 		EntityManager entityManager = EMF.createEntityManager();
@@ -81,12 +83,12 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 		}
 		return new ArrayList<Trabajo>();
 	}
-	
+
 	public List<Usuario> getEvaluadores(Integer id) {
 		EntityManager entityManager = EMF.createEntityManager();
 		List<Usuario>retorno = new ArrayList<Usuario>();
 		String jpql = "SELECT u FROM Trabajo t, Usuario u WHERE t.id = :id AND u MEMBER OF t.evaluadores";
-//		String jpql = "SELECT u FROM Evaluacion e JOIN e.evaluador u WHERE e.trabajo.id = :id";
+		//		String jpql = "SELECT u FROM Evaluacion e JOIN e.evaluador u WHERE e.trabajo.id = :id";
 		Query query = entityManager.createQuery(jpql);
 		query.setParameter("id", id);
 
@@ -96,7 +98,7 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 		}
 		return new ArrayList<Usuario>();
 	}
-	
+
 	public List<Usuario> getAutores(int id) {
 		EntityManager entityManager = EMF.createEntityManager();
 		List<Usuario>retorno = new ArrayList<Usuario>();
@@ -110,7 +112,7 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 		}
 		return new ArrayList<Usuario>();
 	}
-	
+
 	public List<Tematica> getTemas(int id) {
 		EntityManager entityManager = EMF.createEntityManager();
 		List<Tematica>retorno = new ArrayList<Tematica>();
@@ -124,7 +126,7 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 		}
 		return new ArrayList<Tematica>();
 	}
-	
+
 	public List<Evaluacion> getEvaluaciones(int id) {
 		EntityManager entityManager = EMF.createEntityManager();
 		List<Evaluacion>retorno = new ArrayList<Evaluacion>();
@@ -138,11 +140,11 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 		}
 		return new ArrayList<Evaluacion>();
 	}
-		
+
 	public int getCantidadTrabajos() {
 		return findAll().size() + 0;
 	}
-	
+
 	public Trabajo getFirst(){
 		return findAll().get(0);
 	}

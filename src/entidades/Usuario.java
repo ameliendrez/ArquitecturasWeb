@@ -173,7 +173,7 @@ public class Usuario {
 	//--------------Controles y metodos de clase--------------
 
 	public boolean addTrabajoInvestigacion(Trabajo trabajo) {
-		if(!this.trabajos_pendientes.contains(trabajo) && !this.trabajos_pendientes.contains(trabajo)) {
+		if(!this.trabajos_pendientes.contains(trabajo) && !this.trabajos_evaluacion.contains(trabajo)) {
 			trabajo.setAutores(this);
 			this.trabajos_investigacion.add(trabajo);
 			return true;
@@ -182,11 +182,11 @@ public class Usuario {
 	}
 
 	public boolean addTrabajoEvaluacion(Trabajo trabajo) {
-		if(this.trabajos_pendientes.size() >= 3 ) {
+		if(this.trabajos_evaluacion.size() >= 3 ) {
 			return this.addTrabajoPendiente(trabajo);
 		}
 		else {
-			this.trabajos_pendientes.add(trabajo);
+			this.trabajos_evaluacion.add(trabajo);
 			return true;
 		}
 	}
@@ -194,6 +194,7 @@ public class Usuario {
 	public boolean addTrabajoPendiente(Trabajo trabajo) {
 		if (this.esEvaluadorApto(trabajo)) {
 			this.trabajos_pendientes.add(trabajo);
+			this.aceptarTrabajo(trabajo);
 			return true;
 		}
 		return false;

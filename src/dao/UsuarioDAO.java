@@ -72,7 +72,7 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		if(user != null) {
 			Query query = entityManager.createQuery(
 					"SELECT t FROM Tematica t, Usuario u WHERE u.dni = :id AND t MEMBER OF u.temas");
-			
+
 			query.setParameter("id", id);
 			List<Tematica> t = query.getResultList();
 			for (int i = 0; i < t.size(); i++) {
@@ -90,7 +90,7 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		if(user != null) {
 			Query query = entityManager.createQuery(
 					"SELECT t FROM Trabajo t, Usuario u WHERE u.dni = :id AND t MEMBER OF u.trabajos_evaluacion");
-			
+
 			query.setParameter("id", id);
 			if (!query.getResultList().isEmpty()) {
 				return query.getResultList();
@@ -105,7 +105,7 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		if(user != null) {
 			Query query = entityManager.createQuery(
 					"SELECT t FROM Trabajo t, Usuario u WHERE u.dni = :id AND t MEMBER OF u.trabajos_pendientes");
-			
+
 			query.setParameter("id", id);
 			if (!query.getResultList().isEmpty()) {
 				entityManager.close();
@@ -130,7 +130,7 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		if(user != null) {
 			Query query = entityManager.createQuery(
 					"SELECT t FROM Trabajo t, Usuario u WHERE u.dni = :id AND t MEMBER OF u.trabajos_investigacion");
-			
+
 			query.setParameter("id", id);
 			if (!query.getResultList().isEmpty()) {
 				return query.getResultList();
@@ -164,7 +164,7 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		if(user != null) {
 			Query query = entityManager.createQuery(
 					"SELECT t FROM Trabajo t JOIN Evaluacion e WHERE e.evaluador = :id AND e.fecha >= :desde AND e.fecha <= :hasta");
-			
+
 			query.setParameter("id", id);
 			query.setParameter("desde", desde);
 			query.setParameter("hasta", hasta);
@@ -192,18 +192,13 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 							+ "WHERE aut.autor_id = :idAutor " 
 							+ "AND et.evaluador_id = :idEvaluador "
 							+ "AND tt.temas_id = :idTematica", Trabajo.class);
-			
-//			String jpql = "";
-//			
-//			Query query = entityManager.createQuery(
-//					"SELECT t FROM Trabajo t "
-//							+ "JOIN autor_trabajo aut ON t.id = aut.trabajo_id "
-//							+ "JOIN evaluador_trabajo et ON t.id = et.trabajo_id "
-//							+ "JOIN trabajo_tematica tt ON t.id = tt.Trabajo_id "
-//							+ "WHERE aut.autor_id = :idAutor " 
-//							+ "AND et.evaluador_id = :idEvaluador "
-//							+ "AND tt.temas_id = :idTematica", Trabajo.class);
-			
+
+			/*
+  				Query query = entityManager.createQuery(
+  				"SELECT t FROM Trabajo t JOIN t.autores at JOIN t.evaluadores et JOIN t.tematicas tpc 
+  					WHERE at.id = :idAutor AND et.id = :idEvaluador AND tpc.id = :idTematica");
+			 */
+
 			query.setParameter("idAutor", idAutor);
 			query.setParameter("idEvaluador", idEvaluador);
 			query.setParameter("idTematica", idTematica);
@@ -292,10 +287,9 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 
 		entityManager.getTransaction().begin();
 		usuario.addTrabajoPendiente(trabajo);
-		usuario.aceptarTrabajo(trabajo);
-		trabajo.setEvaluadores(usuario);
 		entityManager.getTransaction().commit();
 		entityManager.close();
+
 		return true;
 	}
 

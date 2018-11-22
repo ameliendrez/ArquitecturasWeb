@@ -1,5 +1,7 @@
 package testsRestJUnit;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,20 +19,22 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import dao.UsuarioDAO;
 
 public class TestRestTrabajo {
 
-//	private static final int OK = 201;
-//	private static final int ERROR = 500;
-//	private static final int NOTFOUND = 404;
+	private final int OK = 201;
+	private final int ERROR = 500;
 
 	public final String BASE_URL = "http://localhost:8080/TPE-ARQUITECTURAS/api";
 
-	public final HttpClient client = HttpClientBuilder.create().build();
+	public HttpClient client = HttpClientBuilder.create().build();
+
+	private void resetHttpClient() {
+		this.client = HttpClientBuilder.create().build();
+	}
 
 	@Test
 	public void testRESTInterface() throws ClientProtocolException, IOException {
@@ -38,14 +42,15 @@ public class TestRestTrabajo {
 		getTrabajo();
 		listarTrabajos();
 		listarAutores();
-		asignarEvaluadores();
-		listarEvaluadores();
+		//asignarEvaluadores();
+		//listarEvaluadores();
+		asignarEvaluadoresErroneos();
 		listarTematicas();
-//		listarEvaluaciones();
+		//listarEvaluaciones();
 
 		//Borrar todas las entradas de la Base de Datos
 		//deleteAll();
-		
+
 		//Borrar la Base de Datos
 		//deleteDatabase();
 	}
@@ -85,7 +90,7 @@ public class TestRestTrabajo {
 
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode jsonObject = mapper.createObjectNode();
-		
+
 
 		//----------------------------------------------------------------------
 		jsonObject.put("nombre", "Desmitificando la IA");
@@ -98,10 +103,9 @@ public class TestRestTrabajo {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		HttpResponse response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		String resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
 
 		//----------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
@@ -115,11 +119,10 @@ public class TestRestTrabajo {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
-		
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
+
 		//----------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "Python");
@@ -133,11 +136,10 @@ public class TestRestTrabajo {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
-		
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
+
 		//----------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "Java");
@@ -151,12 +153,11 @@ public class TestRestTrabajo {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
 
-		
+		this.resetHttpClient();
+
+
 		//----------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "Ruby");
@@ -170,12 +171,11 @@ public class TestRestTrabajo {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
 
-		
+		this.resetHttpClient();
+
+
 		//----------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "MongoDB");
@@ -189,25 +189,17 @@ public class TestRestTrabajo {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
 
-		
+		this.resetHttpClient();
+
+
 		//----------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "Metodos Agiles");
 		jsonObject.putPOJO("tipoTrabajo", tipoTrabajo);
 		jsonObject.putPOJO("autores", usuario);
 		jsonObject.putPOJO("tematicas", tematica2);
-		jsonObject.putPOJO("evaluadores", usuario2);
-		//TODO
-		
-//		ArrayNode autores = jsonObject.putArray("autores");
-//		autores.addPOJO(usuario);
-//		jsonObject.putPOJO("autores", autores);
-
 
 		jsonString = jsonObject.toString();
 		post = new HttpPost(url);
@@ -216,10 +208,10 @@ public class TestRestTrabajo {
 
 		System.out.println("\nPOST "+url);
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
+		String resultContent = getResultContent(response);
 		System.out.println("Response Content : " + resultContent);
 
-		
+
 		//----------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "Node Js");
@@ -233,12 +225,11 @@ public class TestRestTrabajo {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
 
-		
+		this.resetHttpClient();
+
+
 		//----------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "Angular Js");
@@ -252,12 +243,11 @@ public class TestRestTrabajo {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
 
-		
+		this.resetHttpClient();
+
+
 		//----------------------------------------------------------------------Ultimo
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "Go");
@@ -271,10 +261,9 @@ public class TestRestTrabajo {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
 
 	}
 
@@ -299,7 +288,7 @@ public class TestRestTrabajo {
 	 * @throws IOException
 	 * Se muestran todos los trabajos existentes
 	 */
-	
+
 	public void listarTrabajos() throws ClientProtocolException, IOException {
 		System.out.println("\n\nTrabajoTest-> Se traen todos los trabajos");
 
@@ -309,16 +298,12 @@ public class TestRestTrabajo {
 
 		HttpResponse response = client.execute(request);
 
-		System.out.println("\nGET " + url);
+		assertEquals(200, response.getStatusLine().getStatusCode());
 
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-		String resultContent = getResultContent(response);
-
-		System.out.println("Response Content : " + resultContent);
+		this.resetHttpClient();
 
 	}
-	
+
 	/**
 	 * @throws ClientProtocolException
 	 * @throws IOException
@@ -334,13 +319,9 @@ public class TestRestTrabajo {
 
 		HttpResponse response = client.execute(request);
 
-		System.out.println("\nGET " + url);
+		assertEquals(200, response.getStatusLine().getStatusCode());
 
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-		String resultContent = getResultContent(response);
-
-		System.out.println("Response Content : " + resultContent);
+		this.resetHttpClient();
 
 	}
 
@@ -349,7 +330,7 @@ public class TestRestTrabajo {
 	 * @throws IOException
 	 * Se traen todos los autores dado un trabajo
 	 */
-	
+
 	public void listarAutores() throws ClientProtocolException, IOException {
 		System.out.println("\nTrabajoTest-> Se listan los autores de un trabajo");
 
@@ -360,15 +341,12 @@ public class TestRestTrabajo {
 		HttpResponse response = client.execute(request);
 
 		System.out.println("\nGET " + url);
-
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
 		String resultContent = getResultContent(response);
-
 		System.out.println("Response Content : " + resultContent);
 
 	}
-	
+
 	/**
 	 * @throws ClientProtocolException
 	 * @throws IOException
@@ -385,11 +363,8 @@ public class TestRestTrabajo {
 		HttpResponse response = client.execute(request);
 
 		System.out.println("\nGET " + url);
-
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
 		String resultContent = getResultContent(response);
-
 		System.out.println("Response Content : " + resultContent);
 
 	}
@@ -399,7 +374,7 @@ public class TestRestTrabajo {
 	 * @throws IOException
 	 * Se traen todas las tematicas dado un trabajo
 	 */
-	
+
 	public void listarTematicas() throws ClientProtocolException, IOException {
 		System.out.println("\nTrabajoTest-> Se listan las tematicas de un trabajo");
 
@@ -409,16 +384,12 @@ public class TestRestTrabajo {
 
 		HttpResponse response = client.execute(request);
 
-		System.out.println("\nGET " + url);
+		assertEquals(200, response.getStatusLine().getStatusCode());
 
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-		String resultContent = getResultContent(response);
-
-		System.out.println("Response Content : " + resultContent);
+		this.resetHttpClient();
 
 	}
-	
+
 	/**
 	 * @throws ClientProtocolException
 	 * @throws IOException
@@ -435,40 +406,50 @@ public class TestRestTrabajo {
 		HttpResponse response = client.execute(request);
 
 		System.out.println("\nGET " + url);
-
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
 		String resultContent = getResultContent(response);
-
 		System.out.println("Response Content : " + resultContent);
 
 	}
-	
+
 	/**
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 * Se asignan evaluadores a un trabajo determinado
 	 */
-	
+
 	public void asignarEvaluadores() throws ClientProtocolException, IOException {
 		System.out.println("\nTrabajoTest-> Se asignan evaluadores a un trabajo");
-		
+
 		String url = BASE_URL + "/usuarios/asignar/41313351/7";
-		
+
 		HttpPost post = new HttpPost(url);
-		
+
 		post.setEntity(new StringEntity("", ContentType.APPLICATION_JSON));
-		
+
 		HttpResponse response = client.execute(post);
-		
+
 		System.out.println("\nPOST " + url);
-
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
 		String resultContent = getResultContent(response);
-
 		System.out.println("Response Content : " + resultContent);
-		
+
+	}
+
+	private void asignarEvaluadoresErroneos() throws ClientProtocolException, IOException {
+		System.out.println("\nTrabajoTest-> Se asignan evaluadores incorrectos a un trabajo");
+
+		String url = BASE_URL + "/usuarios/asignar/27332662/1";
+
+		HttpPost post = new HttpPost(url);
+
+		post.setEntity(new StringEntity("", ContentType.APPLICATION_JSON));
+
+		HttpResponse response = client.execute(post);
+
+		assertEquals(this.ERROR, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
 	}
 
 

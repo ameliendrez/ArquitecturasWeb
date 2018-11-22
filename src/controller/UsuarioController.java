@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import dao.TrabajoDAO;
 import dao.UsuarioDAO;
 import entidades.Evaluacion;
 import entidades.Tematica;

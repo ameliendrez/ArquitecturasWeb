@@ -1,5 +1,7 @@
 package testsRestJUnit;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,10 +21,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class TestRestTematica {
+	
+	private final int OK = 201;
+	private final int ERROR = 500;
 
 	public final String BASE_URL = "http://localhost:8080/TPE-ARQUITECTURAS/api";
 
-	public final HttpClient client = HttpClientBuilder.create().build();
+	public HttpClient client = HttpClientBuilder.create().build();
+	
+	private void resetHttpClient() {
+		this.client = HttpClientBuilder.create().build();
+	}
 
 	@Test
 	public void testRESTInterface() throws ClientProtocolException, IOException {
@@ -32,7 +41,8 @@ public class TestRestTematica {
 		//updateTematica();
 		//deleteTematica();
 	}
-
+	
+	@Test
 	public void crearTemas() throws ClientProtocolException, IOException {
 		System.out.println("\nTematicaTest-> Se crean tematicas");
 
@@ -47,11 +57,10 @@ public class TestRestTematica {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		HttpResponse response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		String resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
-
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+		
+		this.resetHttpClient();
+		
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "JavaScript");
 		jsonObject.put("esExperto", "false");
@@ -61,10 +70,9 @@ public class TestRestTematica {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+		
+		this.resetHttpClient();
 
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "Eclipse");
@@ -75,10 +83,9 @@ public class TestRestTematica {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+		
+		this.resetHttpClient();
 
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "Python");
@@ -89,10 +96,9 @@ public class TestRestTematica {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+		
+		this.resetHttpClient();
 
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "Atom");
@@ -103,10 +109,9 @@ public class TestRestTematica {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+		
+		this.resetHttpClient();
 
 	}
 
@@ -127,6 +132,7 @@ public class TestRestTematica {
 	}
 
 	public void listarTematicas() throws ClientProtocolException, IOException {
+
 		System.out.println("\nTematicaTest-> Se traen todos las tematicas");
 
 		String url = BASE_URL + "/tematicas";
@@ -135,13 +141,9 @@ public class TestRestTematica {
 
 		HttpResponse response = client.execute(request);
 
-		System.out.println("\nGET " + url);
-
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-		String resultContent = getResultContent(response);
-
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(200, response.getStatusLine().getStatusCode());
+		
+		this.resetHttpClient();
 
 	}
 
@@ -154,13 +156,9 @@ public class TestRestTematica {
 
 		HttpResponse response = client.execute(request);
 
-		System.out.println("\nGET " + url);
-
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-		String resultContent = getResultContent(response);
-
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(200, response.getStatusLine().getStatusCode());
+		
+		this.resetHttpClient();
 
 	}
 

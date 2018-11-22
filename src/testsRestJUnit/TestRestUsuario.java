@@ -1,6 +1,8 @@
 package testsRestJUnit;
 
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,10 +25,17 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
 public class TestRestUsuario {
+	
+	private final int OK = 201;
+	private final int ERROR = 500;
 
 	public final String BASE_URL = "http://localhost:8080/TPE-ARQUITECTURAS/api";
 
-	public final HttpClient client = HttpClientBuilder.create().build();
+	public HttpClient client = HttpClientBuilder.create().build();
+	
+	private void resetHttpClient() {
+		this.client = HttpClientBuilder.create().build();
+	}
 
 	@Test
 	public void testRESTInterface() throws ClientProtocolException, IOException {
@@ -95,10 +104,9 @@ public class TestRestUsuario {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
 
 		//--------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
@@ -113,10 +121,9 @@ public class TestRestUsuario {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
 
 		//--------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
@@ -127,7 +134,6 @@ public class TestRestUsuario {
 		
 		temas.addPOJO(tematica);
 		jsonObject.putPOJO("temas", temas);
-		//TODO
 
 		jsonString = jsonObject.toString();
 
@@ -153,10 +159,9 @@ public class TestRestUsuario {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
 
 		//--------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
@@ -171,10 +176,9 @@ public class TestRestUsuario {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
 
 		//--------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
@@ -189,10 +193,9 @@ public class TestRestUsuario {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
 
 		//--------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
@@ -207,10 +210,9 @@ public class TestRestUsuario {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
 
 		//--------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
@@ -225,10 +227,9 @@ public class TestRestUsuario {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
 
 		//--------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
@@ -243,11 +244,9 @@ public class TestRestUsuario {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
 
+		this.resetHttpClient();
 
 	}
 
@@ -282,13 +281,9 @@ public class TestRestUsuario {
 
 		HttpResponse response = client.execute(request);
 
-		System.out.println("\nGET " + url);
+		assertEquals(200, response.getStatusLine().getStatusCode());
 
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-		String resultContent = getResultContent(response);
-
-		System.out.println("Response Content : " + resultContent);
+		this.resetHttpClient();
 
 	}
 
@@ -307,13 +302,9 @@ public class TestRestUsuario {
 
 		HttpResponse response = client.execute(request);
 
-		System.out.println("\nGET " + url);
+		assertEquals(200, response.getStatusLine().getStatusCode());
 
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-		String resultContent = getResultContent(response);
-
-		System.out.println("Response Content : " + resultContent);
+		this.resetHttpClient();
 
 	}
 
@@ -333,11 +324,8 @@ public class TestRestUsuario {
 		HttpResponse response = client.execute(request);
 
 		System.out.println("\nGET " + url);
-
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
 		String resultContent = getResultContent(response);
-
 		System.out.println("Response Content : " + resultContent);
 
 	}
@@ -357,13 +345,14 @@ public class TestRestUsuario {
 
 		HttpResponse response = client.execute(request);
 
-		System.out.println("\nGET " + url);
+//		System.out.println("\nGET " + url);
+//		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+//		String resultContent = getResultContent(response);
+//		System.out.println("Response Content : " + resultContent);
+		
+		assertEquals(200, response.getStatusLine().getStatusCode());
 
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-		String resultContent = getResultContent(response);
-
-		System.out.println("Response Content : " + resultContent);
+		this.resetHttpClient();
 
 	}
 
@@ -383,11 +372,8 @@ public class TestRestUsuario {
 		HttpResponse response = client.execute(request);
 
 		System.out.println("\nGET " + url);
-
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
 		String resultContent = getResultContent(response);
-
 		System.out.println("Response Content : " + resultContent);
 
 	}
@@ -423,13 +409,10 @@ public class TestRestUsuario {
 		request.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		HttpResponse response = client.execute(request);
 
-		System.out.println("\nPUT "+url);
+		assertEquals(200, response.getStatusLine().getStatusCode());
 
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-		String resultContent = getResultContent(response);
-
-		System.out.println("Response Content : " + resultContent);
+		this.resetHttpClient();
+		
 	}
 
 }
