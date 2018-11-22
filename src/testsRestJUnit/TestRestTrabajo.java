@@ -42,8 +42,8 @@ public class TestRestTrabajo {
 		getTrabajo();
 		listarTrabajos();
 		listarAutores();
-		//asignarEvaluadores();
-		//listarEvaluadores();
+		asignarEvaluadores();
+		listarEvaluadores();
 		asignarEvaluadoresErroneos();
 		listarTematicas();
 		//listarEvaluaciones();
@@ -56,7 +56,7 @@ public class TestRestTrabajo {
 	}
 
 	public void crearTrabajos() throws ClientProtocolException, IOException {
-		System.out.println("\n\nTrabajoTest-> Se crean trabajos");
+		System.out.println("\nTrabajoTest-> Se crean trabajos");
 
 		HttpGet tipoTrabajoRequest = new HttpGet(BASE_URL + "/tipoTrabajos/1");
 		HttpResponse responseTipoTrabajo = client.execute(tipoTrabajoRequest);
@@ -103,6 +103,7 @@ public class TestRestTrabajo {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		HttpResponse response = client.execute(post);
 
+		
 		assertEquals(this.OK, response.getStatusLine().getStatusCode());
 
 		this.resetHttpClient();
@@ -118,7 +119,7 @@ public class TestRestTrabajo {
 		post = new HttpPost(url);
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
-
+		
 		assertEquals(this.OK, response.getStatusLine().getStatusCode());
 
 		this.resetHttpClient();
@@ -206,10 +207,9 @@ public class TestRestTrabajo {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		String resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
 
 
 		//----------------------------------------------------------------------
@@ -362,10 +362,9 @@ public class TestRestTrabajo {
 
 		HttpResponse response = client.execute(request);
 
-		System.out.println("\nGET " + url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		String resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(200, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
 
 	}
 
@@ -429,10 +428,9 @@ public class TestRestTrabajo {
 
 		HttpResponse response = client.execute(post);
 
-		System.out.println("\nPOST " + url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		String resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
 
 	}
 

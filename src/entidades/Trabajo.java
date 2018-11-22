@@ -10,8 +10,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Trabajo {
@@ -29,14 +32,21 @@ public class Trabajo {
 	private TipoTrabajo tipo_trabajo;
 
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "trabajos_investigacion")
+	@JsonIgnore
 	@Column(nullable = false)
 	Set<Usuario> autores;
 
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "trabajos_evaluacion")
+	@JsonIgnore
 	@Column(nullable = false)
 	Set<Usuario> evaluadores;
 
 	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "trabajo_tematicas",
+			joinColumns = { @JoinColumn(name = "trabajo_id") },
+			inverseJoinColumns = { @JoinColumn(name = "tematicas_id") }
+			)
 	@JoinColumn(nullable = false)
 	Set<Tematica> tematicas;
 

@@ -86,10 +86,9 @@ public class TestRestUsuario {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		HttpResponse response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		String resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
 
 		//----------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
@@ -141,10 +140,9 @@ public class TestRestUsuario {
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		response = client.execute(post);
 
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
 
 		//--------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
@@ -323,10 +321,9 @@ public class TestRestUsuario {
 
 		HttpResponse response = client.execute(request);
 
-		System.out.println("\nGET " + url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		String resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
+		assertEquals(200, response.getStatusLine().getStatusCode());
+
+		this.resetHttpClient();
 
 	}
 
@@ -344,11 +341,6 @@ public class TestRestUsuario {
 		HttpGet request = new HttpGet(url);
 
 		HttpResponse response = client.execute(request);
-
-//		System.out.println("\nGET " + url);
-//		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-//		String resultContent = getResultContent(response);
-//		System.out.println("Response Content : " + resultContent);
 		
 		assertEquals(200, response.getStatusLine().getStatusCode());
 

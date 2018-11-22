@@ -32,8 +32,21 @@ public class Usuario {
 	private Lugar lugar;
 
 	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "usuario_temas",
+			joinColumns = { @JoinColumn(name = "usuario_dni") },
+			inverseJoinColumns = { @JoinColumn(name = "temas_id") }
+			)
 	@JoinColumn
 	Set<Tematica>temas;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "autor_trabajo",
+			joinColumns = { @JoinColumn(name = "autor_id") },
+			inverseJoinColumns = { @JoinColumn(name = "trabajo_id") }
+			)
+	private Set<Trabajo> trabajos_investigacion;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
@@ -52,16 +65,13 @@ public class Usuario {
 	private Set<Trabajo> trabajos_pendientes;
 
 	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "usuario_evaluaciones",
+			joinColumns = { @JoinColumn(name = "usuario_dni") },
+			inverseJoinColumns = { @JoinColumn(name = "evaluaciones_id") }
+			)
 	@JoinColumn
 	private Set<Evaluacion> evaluaciones;
-
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(
-			name = "autor_trabajo",
-			joinColumns = { @JoinColumn(name = "autor_id") },
-			inverseJoinColumns = { @JoinColumn(name = "trabajo_id") }
-			)
-	private Set<Trabajo> trabajos_investigacion;
 
 	//--------------Constructor--------------
 
@@ -73,14 +83,14 @@ public class Usuario {
 		this.temas = new HashSet<Tematica>();
 		this.trabajos_investigacion = new HashSet<Trabajo>();
 		this.trabajos_pendientes = new HashSet<Trabajo>();
-		this.trabajos_pendientes = new HashSet<Trabajo>();
+		this.trabajos_evaluacion = new HashSet<Trabajo>();
 	}
 
 	public Usuario() {
 		this.temas = new HashSet<Tematica>();
 		this.trabajos_investigacion = new HashSet<Trabajo>();
 		this.trabajos_pendientes = new HashSet<Trabajo>();
-		this.trabajos_pendientes = new HashSet<Trabajo>();
+		this.trabajos_evaluacion = new HashSet<Trabajo>();
 	}
 
 	//--------------toString--------------
@@ -147,7 +157,7 @@ public class Usuario {
 	}
 
 	public Set<Trabajo> getTrabajosEvaluacion() {
-		return this.trabajos_pendientes;
+		return this.trabajos_evaluacion;
 	}
 
 	public Set<Trabajo> getTrabajosPendientes() {
@@ -163,7 +173,7 @@ public class Usuario {
 	}
 	
 	public void setTrabajos_investigacion(Trabajo trabajo) {
-		if(!this.trabajos_pendientes.contains(trabajo) && !this.trabajos_pendientes.contains(trabajo)) {
+		if(!this.trabajos_pendientes.contains(trabajo) && !this.trabajos_evaluacion.contains(trabajo)) {
 			trabajo.setAutores(this);
 			this.trabajos_investigacion.add(trabajo);
 		}

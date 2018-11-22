@@ -86,7 +86,19 @@ public class UsuarioController {
 		int id = Integer.valueOf(msg);
 		List<Trabajo>trabajos = UsuarioDAO.getInstance().findAllTrabajosAsignados(id);
 		if(trabajos != null) {
-			System.out.println(trabajos);
+			return trabajos;
+
+		}else
+			throw new RecursoNoExiste(id);
+	}
+	
+	@GET
+	@Path("/trabajosEnviados/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Trabajo> getTrabajosEnviadosDeUsuarioById(@PathParam("id") String msg) {
+		int id = Integer.valueOf(msg);
+		List<Trabajo>trabajos = UsuarioDAO.getInstance().findAllTrabajosEnviados(id);
+		if(trabajos != null) {
 			return trabajos;
 
 		}else
