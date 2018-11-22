@@ -56,7 +56,6 @@ public class TematicaDAO extends BaseJpaDAO<Tematica, Integer> {
 			retorno = query.getResultList();
 			return retorno;
 		}
-		//System.out.println("La consulta no devolvio ningun resultado");
 		throw new UnsupportedOperationException();
 	}
 

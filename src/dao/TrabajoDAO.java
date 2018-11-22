@@ -88,7 +88,6 @@ public class TrabajoDAO extends BaseJpaDAO<Trabajo, Integer> {
 		EntityManager entityManager = EMF.createEntityManager();
 		List<Usuario>retorno = new ArrayList<Usuario>();
 		String jpql = "SELECT u FROM Trabajo t, Usuario u WHERE t.id = :id AND u MEMBER OF t.evaluadores";
-		//		String jpql = "SELECT u FROM Evaluacion e JOIN e.evaluador u WHERE e.trabajo.id = :id";
 		Query query = entityManager.createQuery(jpql);
 		query.setParameter("id", id);
 

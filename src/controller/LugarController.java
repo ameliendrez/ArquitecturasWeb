@@ -61,18 +61,5 @@ public class LugarController {
 		else
 			throw new RecursoNoExiste(id);
 	}
-	
-	@PUT
-	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateLugar(@PathParam("id") int id, Lugar lugar) {
-		Lugar result= LugarDAO.getInstance().update(id, lugar);
-		if(result==null) {
-			throw new RecursoNoExiste(id);
-		}else {
-			return Response.status(200).entity(lugar).build();
-		}
-	}
 
 }

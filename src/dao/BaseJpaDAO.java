@@ -45,5 +45,11 @@ public class BaseJpaDAO<Entity, ID extends Serializable> implements DAO<Entity, 
 		entityManager.getTransaction().commit();
 		entityManager.close();
 	}
+
+
+	@Override
+	public boolean delete(ID id) {
+		return false;
+	}
 	
 }

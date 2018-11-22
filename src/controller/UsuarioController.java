@@ -1,5 +1,8 @@
 package controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -13,7 +16,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import dao.TrabajoDAO;
 import dao.UsuarioDAO;
 import entidades.Evaluacion;
 import entidades.Tematica;
@@ -25,6 +27,7 @@ import exceptions.RecursoNoExiste;
 
 @Path("/usuarios")
 public class UsuarioController {
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON) 
 	public List<Usuario> getAllUsuarios() {
@@ -141,6 +144,45 @@ public class UsuarioController {
 			return Response.status(201).entity(usuario).build();
 		}
 		throw new Exception("Ocurrio un problema durante la asignacion del Trabajo con id: " + idTrabajo + " al usuario con id: " + idUsuario);
+	}
+	
+	@GET
+	@Path("/{id}/{from}/{to}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Trabajo> findTrabajosRevisadosEnRangoDeUsuarioById(@PathParam("id") String msg, @PathParam("from") String dateFrom,
+			@PathParam("to") String dateTo) {
+		
+		int idUser = Integer.valueOf(msg);
+		Calendar calendarFrom;
+		Calendar calendarTo;
+		calendarTo = Calendar.getInstance();
+		calendarFrom= Calendar.getInstance();
+
+		System.out.println(idUser);
+		System.out.println(dateFrom);
+		System.out.println(dateTo);
+
+		try {
+			java.util.Date fechaTo = new SimpleDateFormat("yyyy-MM-dd").parse(dateTo);
+			java.util.Date fechaFrom = new SimpleDateFormat("yyyy-MM-dd").parse(dateFrom);
+			calendarTo.setTime(fechaTo);
+			calendarFrom.setTime(fechaFrom); 
+		} 
+		catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println(calendarFrom);
+		System.out.println(calendarTo);
+
+		List<Trabajo>revisiones = UsuarioDAO.getInstance().findAllTrabajosInvestigacionEnRango(idUser, calendarFrom, calendarTo);
+		if(revisiones != null) {
+			System.out.println(revisiones);
+			return revisiones;
+		}
+		else {
+			throw new RecursoNoExiste(idUser);	
+		}
 	}
 
 }

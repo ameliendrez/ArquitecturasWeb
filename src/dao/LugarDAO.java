@@ -56,7 +56,6 @@ public class LugarDAO extends BaseJpaDAO<Lugar, Integer> {
 			retorno = query.getResultList();
 			return retorno;
 		}
-		//System.out.println("La consulta no devolvio ningun resultado");
 		throw new UnsupportedOperationException();
 	}
 
@@ -81,22 +80,5 @@ public class LugarDAO extends BaseJpaDAO<Lugar, Integer> {
 		else
 			return false;
 	}
-
-	public Lugar update(int id, Lugar entity) {
-		EntityManager entityManager = EMF.createEntityManager();
-		Lugar entityAux = entityManager.find(Lugar.class, id);
-		if (entityAux == null) {
-			entityManager.close();
-			return null;
-		} else {
-			entityManager.getTransaction().begin();
-			entityAux.setNombre(entity.getNombre());
-			//TO DO
-			entityManager.getTransaction().commit();
-			entityManager.close();
-			return entityAux;
-		}
-	}
-
 
 }

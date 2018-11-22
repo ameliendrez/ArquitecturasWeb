@@ -27,7 +27,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public class TestRestUsuario {
 	
 	private final int OK = 201;
-	private final int ERROR = 500;
 
 	public final String BASE_URL = "http://localhost:8080/TPE-ARQUITECTURAS/api";
 

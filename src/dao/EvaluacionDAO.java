@@ -1,14 +1,9 @@
 package dao;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-
 import entidades.EMF;
 import entidades.Evaluacion;
-import entidades.Usuario;
 
 public class EvaluacionDAO extends BaseJpaDAO<Evaluacion, Integer>{
 
@@ -61,21 +56,6 @@ public class EvaluacionDAO extends BaseJpaDAO<Evaluacion, Integer>{
 			return true;
 		else
 			return false;
-	}
-
-	public Evaluacion update(int id, Evaluacion entity) {
-		EntityManager entityManager = EMF.createEntityManager();
-		Evaluacion entityAux = entityManager.find(Evaluacion.class, id);
-		if (entityAux == null) {
-			entityManager.close();
-			return null;
-		} else {
-			entityManager.getTransaction().begin();
-			//TO DO
-			entityManager.getTransaction().commit();
-			entityManager.close();
-			return entityAux;
-		}
 	}
 
 }

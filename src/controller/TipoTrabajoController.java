@@ -62,16 +62,4 @@ public class TipoTrabajoController {
 			throw new RecursoNoExiste(id);
 	}
 	
-	@PUT
-	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateTipoTrabajo(@PathParam("id") int id, TipoTrabajo tipoTrabajo) {
-		TipoTrabajo result= TipoTrabajoDAO.getInstance().update(id, tipoTrabajo);
-		if(result==null) {
-			throw new RecursoNoExiste(id);
-		}else {
-			return Response.status(200).entity(tipoTrabajo).build();
-		}
-	}	
 }

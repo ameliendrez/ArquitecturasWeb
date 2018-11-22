@@ -81,20 +81,4 @@ public class TipoTrabajoDAO extends BaseJpaDAO<TipoTrabajo, Integer> {
 			return false;
 	}
 
-	public TipoTrabajo update(int id, TipoTrabajo entity) {
-		EntityManager entityManager = EMF.createEntityManager();
-		TipoTrabajo entityAux = entityManager.find(TipoTrabajo.class, id);
-		if (entityAux == null) {
-			entityManager.close();
-			return null;
-		} else {
-			entityManager.getTransaction().begin();
-			entityAux.setNombre(entity.getNombre());
-			//TO DO
-			entityManager.getTransaction().commit();
-			entityManager.close();
-			return entityAux;
-		}
-	}
-
 }
