@@ -215,12 +215,12 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 Query query = entityManager.createQuery("SELECT t FROM Evaluacion e "
 		+ "JOIN e.trabajo t JOIN t.autores aut JOIN t.tematicas tem "
 		+ "WHERE e.evaluador = :evaluador "
-		//+ "AND :tema MEMBER of tem "
+		+ "AND :tema MEMBER of tem "
 		+ "AND :autor MEMBER OF aut ");
 
 			query.setParameter("autor", autor);
 			query.setParameter("evaluador", evaluador);
-			//query.setParameter("tema", tema);
+			query.setParameter("tema", tema);
 			if (!query.getResultList().isEmpty()) {
 				retorno = query.getResultList();
 				return retorno;
