@@ -5,15 +5,11 @@ import static org.junit.Assert.assertEquals;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Calendar;
-
-import javax.ws.rs.Path;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
@@ -23,7 +19,6 @@ import org.junit.AfterClass;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import dao.UsuarioDAO;
@@ -53,10 +48,6 @@ public class TestRestTrabajo {
 		asignarEvaluadoresErroneos();
 		realizarRevision();
 		getTrabajosRevisadosByRevisor();
-//		listarTematicas();
-		//listarEvaluaciones();
-		
-
 
 	}
 

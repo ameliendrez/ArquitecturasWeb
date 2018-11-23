@@ -184,48 +184,26 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		TematicaDAO daoT = TematicaDAO.getInstance();
 		Tematica tema = daoT.findById(idTematica);
 		if(autor != null && evaluador != null && tema !=null) {
-//			Query query2 = entityManager.createNativeQuery(
-//					"SELECT * FROM trabajo t "
-//							+ "JOIN autor_trabajo aut ON t.id = aut.trabajo_id "
-//							+ "JOIN evaluador_trabajo et ON t.id = et.trabajo_id "
-//							+ "JOIN trabajo_tematica tt ON t.id = tt.Trabajo_id "
-//							+ "WHERE aut.autor_id = :idAutor " 
-//							+ "AND et.evaluador_id = :idEvaluador "
-//							+ "AND tt.temas_id = :idTematica", Trabajo.class);
-
-		// "SELECT e.trabajo FROM Evaluacion e WHERE e.evaluador = :user 
-		//	AND e.fecha >= :desde AND e.fecha <= :hasta");
 			
-			//SELECT e.trabajo FROM Evaluacion e WHERE e.evaluador = :evaluador
-			// AND e.trabajo.autor = :autor 
+			Query query = entityManager.createQuery(
+					"SELECT t FROM Trabajo t "
+							+ "JOIN t.autores at "
+							+ "JOIN t.evaluadores et "
+							+ "JOIN t.tematicas te "
+							+ "WHERE at.dni = :autor_id "
+							+ "AND et.dni = :evaluador_id "
+							+ "AND te.id = :tema_id");
 			
-//SELECT t FROM Trabajo t, Evaluacion e, 
-//WHERE e.evaluador = :evaluador
-//AND t = e.trabajo
-//AND :tema MEMBER of t.tematicas
-//AND :autor MEMBER OF t.autores
-
-//		"SELECT t FROM Tematica t, Usuario u 
-		//WHERE u.dni = :id AND t MEMBER OF u.temas");
-
-//  				Query query = entityManager.createQuery("SELECT t FROM "
-//  						+ "Trabajo t JOIN t.autores at JOIN t.evaluadores et JOIN t.tematicas tpc" 
-//  					+ "WHERE at.id = :autor AND et.id = :evaluador AND tpc.id = :tematica");
-	
-Query query = entityManager.createQuery("SELECT t FROM Evaluacion e "
-		+ "JOIN e.trabajo t JOIN t.autores aut JOIN t.tematicas tem "
-		+ "WHERE e.evaluador = :evaluador "
-		//+ "AND :tema MEMBER of tem "
-		+ "AND :autor MEMBER OF aut ");
-
-			query.setParameter("autor", autor);
-			query.setParameter("evaluador", evaluador);
-			//query.setParameter("tema", tema);
+			query.setParameter("autor_id", autor.getDni());
+			query.setParameter("evaluador_id", evaluador.getDni());
+			query.setParameter("tema_id", tema.getId());
+			
 			if (!query.getResultList().isEmpty()) {
 				retorno = query.getResultList();
 				return retorno;
 			}
 		}
+		
 		return new ArrayList<Trabajo>();
 	}
 
