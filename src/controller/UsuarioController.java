@@ -3,6 +3,7 @@ package controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -16,6 +17,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import dao.EvaluacionDAO;
+import dao.TrabajoDAO;
 import dao.UsuarioDAO;
 import entidades.Evaluacion;
 import entidades.Tematica;
@@ -146,43 +149,58 @@ public class UsuarioController {
 		throw new Exception("Ocurrio un problema durante la asignacion del Trabajo con id: " + idTrabajo + " al usuario con id: " + idUsuario);
 	}
 	
-	@GET
-	@Path("/{id}/{from}/{to}")
+	@POST
+	@Path("/aceptar/{idUsuario}/{idTrabajo}")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Trabajo> findTrabajosRevisadosEnRangoDeUsuarioById(@PathParam("id") String msg, @PathParam("from") String dateFrom,
-			@PathParam("to") String dateTo) {
+	public Response aceptarTrabajoRevisor(
+			@PathParam("idUsuario") Integer idUsuario, @PathParam("idTrabajo") Integer idTrabajo, String observacion) throws Exception {
+		Evaluacion evaluacion = new Evaluacion();
+		evaluacion.setEvaluador(UsuarioDAO.getInstance().findById(idUsuario));
+		evaluacion.setTrabajo(TrabajoDAO.getInstance().findById(idTrabajo));
+		evaluacion.setFecha(Calendar.getInstance());
+		evaluacion.setObservacion(observacion);
+
+		Evaluacion result = EvaluacionDAO.getInstance().persist(evaluacion);
+		if (result != null) {
+			Evaluacion ev = EvaluacionDAO.getInstance().findById(1);
+			return Response.status(201).entity(ev).build();
+		}
+		throw new Exception("Ocurrio un problema durante la asignacion del Trabajo con id: " + idTrabajo + " al usuario con id: " + idUsuario);
+	}
+	
+	@GET
+	@Path("/revisados/{id}/{from}/{to}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Trabajo> findTrabajosRevisadosEnRangoDeUsuarioById(@PathParam("id") String id, @PathParam("from") String dateFrom,
+			@PathParam("to") String dateTo) throws ParseException {
 		
-		int idUser = Integer.valueOf(msg);
-		Calendar calendarFrom;
-		Calendar calendarTo;
-		calendarTo = Calendar.getInstance();
-		calendarFrom= Calendar.getInstance();
+		int idUser = Integer.valueOf(id);
+		
+		Calendar fechaInicio = Calendar.getInstance();
+		Calendar fechaFin = Calendar.getInstance();
+		fechaInicio.setTime(this.formatDateFromString(dateFrom));
+		fechaFin.setTime(this.formatDateFromString(dateTo));
 
-		System.out.println(idUser);
-		System.out.println(dateFrom);
-		System.out.println(dateTo);
-
-		try {
-			java.util.Date fechaTo = new SimpleDateFormat("yyyy-MM-dd").parse(dateTo);
-			java.util.Date fechaFrom = new SimpleDateFormat("yyyy-MM-dd").parse(dateFrom);
-			calendarTo.setTime(fechaTo);
-			calendarFrom.setTime(fechaFrom); 
-		} 
-		catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		System.out.println(calendarFrom);
-		System.out.println(calendarTo);
-
-		List<Trabajo>revisiones = UsuarioDAO.getInstance().findAllTrabajosInvestigacionEnRango(idUser, calendarFrom, calendarTo);
-		if(revisiones != null) {
-			System.out.println(revisiones);
-			return revisiones;
-		}
-		else {
-			throw new RecursoNoExiste(idUser);	
-		}
+		List<Trabajo>revisiones = UsuarioDAO.getInstance().findAllTrabajosInvestigacionRevisorEnRango(idUser, fechaInicio, fechaFin);
+		return revisiones; //Response.status(201).entity(revisiones).build();
 	}
 
+	protected Date formatDateFromString(String fecha) throws ParseException {
+		String pattern = "dd-MM-yyyy";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		return simpleDateFormat.parse(fecha);
+	}
+	
+	@DELETE
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteUsuariso() {
+		UsuarioDAO.getInstance().removeAll();
+		boolean wasDeleted = UsuarioDAO.getInstance().getCantidadUsuarios() == 0;
+		if(wasDeleted)
+			return Response.status(200).build();
+		else
+			return Response.status(500).build();
+	}
+	
 }

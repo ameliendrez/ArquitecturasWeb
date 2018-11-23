@@ -5,6 +5,9 @@ import static org.junit.Assert.assertEquals;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
+
+import javax.ws.rs.Path;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -16,15 +19,18 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import dao.UsuarioDAO;
 
 public class TestRestTrabajo {
 
+	private final int GETOK = 200;
 	private final int OK = 201;
 	private final int ERROR = 500;
 
@@ -45,18 +51,17 @@ public class TestRestTrabajo {
 		asignarEvaluadores();
 		listarEvaluadores();
 		asignarEvaluadoresErroneos();
-		listarTematicas();
+		realizarRevision();
+		getTrabajosRevisadosByRevisor();
+//		listarTematicas();
 		//listarEvaluaciones();
+		
 
-		//Borrar todas las entradas de la Base de Datos
-		//deleteAll();
 
-		//Borrar la Base de Datos
-		//deleteDatabase();
 	}
 
 	public void crearTrabajos() throws ClientProtocolException, IOException {
-		System.out.println("\nTrabajoTest-> Se crean trabajos");
+		System.out.println("TrabajoTest-> Se crean 10 trabajos");
 
 		HttpGet tipoTrabajoRequest = new HttpGet(BASE_URL + "/tipoTrabajos/1");
 		HttpResponse responseTipoTrabajo = client.execute(tipoTrabajoRequest);
@@ -248,7 +253,7 @@ public class TestRestTrabajo {
 		this.resetHttpClient();
 
 
-		//----------------------------------------------------------------------Ultimo
+		//----------------------------------------------------------------------
 		jsonObject = mapper.createObjectNode();
 		jsonObject.put("nombre", "Go");
 		jsonObject.putPOJO("tipoTrabajo", tipoTrabajo);
@@ -290,7 +295,7 @@ public class TestRestTrabajo {
 	 */
 
 	public void listarTrabajos() throws ClientProtocolException, IOException {
-		System.out.println("\n\nTrabajoTest-> Se traen todos los trabajos");
+		System.out.println("TrabajoTest-> Se traen todos los trabajos");
 
 		String url = BASE_URL + "/trabajos";
 
@@ -311,7 +316,7 @@ public class TestRestTrabajo {
 	 */
 
 	public void getTrabajo() throws ClientProtocolException, IOException {
-		System.out.println("\nTrabajoTest-> Se trae un trabajo");
+		System.out.println("TrabajoTest-> Se trae un trabajo");
 
 		String url = BASE_URL + "/trabajos/1";
 
@@ -332,19 +337,12 @@ public class TestRestTrabajo {
 	 */
 
 	public void listarAutores() throws ClientProtocolException, IOException {
-		System.out.println("\nTrabajoTest-> Se listan los autores de un trabajo");
-
+		System.out.println("TrabajoTest-> Se listan los autores de un trabajo");
+		
 		String url = BASE_URL + "/trabajos/1/autores";
-
 		HttpGet request = new HttpGet(url);
-
 		HttpResponse response = client.execute(request);
-
-		System.out.println("\nGET " + url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		String resultContent = getResultContent(response);
-		System.out.println("Response Content : " + resultContent);
-
+		assertEquals(this.GETOK, response.getStatusLine().getStatusCode());
 	}
 
 	/**
@@ -355,17 +353,12 @@ public class TestRestTrabajo {
 
 	public void listarEvaluadores() throws ClientProtocolException, IOException {
 		System.out.println("\nTrabajoTest-> Se listan los evaluadores de un trabajo");
-
+		
 		String url = BASE_URL + "/trabajos/7/evaluadores";
-
 		HttpGet request = new HttpGet(url);
-
 		HttpResponse response = client.execute(request);
-
-		assertEquals(200, response.getStatusLine().getStatusCode());
-
+		assertEquals(this.GETOK, response.getStatusLine().getStatusCode());
 		this.resetHttpClient();
-
 	}
 
 	/**
@@ -375,18 +368,13 @@ public class TestRestTrabajo {
 	 */
 
 	public void listarTematicas() throws ClientProtocolException, IOException {
-		System.out.println("\nTrabajoTest-> Se listan las tematicas de un trabajo");
-
+		System.out.println("TrabajoTest-> Se listan las tematicas de un trabajo");
+		
 		String url = BASE_URL + "/trabajos/1/tematicas";
-
 		HttpGet request = new HttpGet(url);
-
 		HttpResponse response = client.execute(request);
-
-		assertEquals(200, response.getStatusLine().getStatusCode());
-
+		assertEquals(this.GETOK, response.getStatusLine().getStatusCode());
 		this.resetHttpClient();
-
 	}
 
 	/**
@@ -396,12 +384,10 @@ public class TestRestTrabajo {
 	 */
 
 	public void listarEvaluaciones() throws ClientProtocolException, IOException {
-		System.out.println("\nTrabajoTest-> Se listan las evaluaciones de un trabajo");
+		System.out.println("TrabajoTest-> Se listan las evaluaciones de un trabajo");
 
 		String url = BASE_URL + "/trabajos/7/evaluaciones";
-
 		HttpGet request = new HttpGet(url);
-
 		HttpResponse response = client.execute(request);
 
 		System.out.println("\nGET " + url);
@@ -418,123 +404,68 @@ public class TestRestTrabajo {
 	 */
 
 	public void asignarEvaluadores() throws ClientProtocolException, IOException {
-		System.out.println("\nTrabajoTest-> Se asignan evaluadores a un trabajo");
+		System.out.println("TrabajoTest-> Se asignan evaluadores a un trabajo");
 
 		String url = BASE_URL + "/usuarios/asignar/41313351/7";
-
 		HttpPost post = new HttpPost(url);
-
 		post.setEntity(new StringEntity("", ContentType.APPLICATION_JSON));
-
 		HttpResponse response = client.execute(post);
-
 		assertEquals(this.OK, response.getStatusLine().getStatusCode());
-
 		this.resetHttpClient();
 
 	}
 
 	private void asignarEvaluadoresErroneos() throws ClientProtocolException, IOException {
-		System.out.println("\nTrabajoTest-> Se asignan evaluadores incorrectos a un trabajo");
+		System.out.println("TrabajoTest-> Se asignan evaluadores incorrectos a un trabajo");
 
 		String url = BASE_URL + "/usuarios/asignar/27332662/1";
-
 		HttpPost post = new HttpPost(url);
-
 		post.setEntity(new StringEntity("", ContentType.APPLICATION_JSON));
-
 		HttpResponse response = client.execute(post);
-
 		assertEquals(this.ERROR, response.getStatusLine().getStatusCode());
-
 		this.resetHttpClient();
 	}
+	
+	private void realizarRevision() throws ClientProtocolException, IOException{
+		System.out.println("TrabajoTest-> Se acepta una revision de un trabajo");
 
+		HttpGet trabajoRequest = new HttpGet(BASE_URL + "/trabajos/7");
+		HttpResponse responseTrabajo = client.execute(trabajoRequest);
+		String trabajo = getResultContent(responseTrabajo);
+		
+		HttpGet usuarioRequest = new HttpGet(BASE_URL + "/usuarios/41313351");
+		HttpResponse responseUsuario = client.execute(usuarioRequest);
+		String usuario = getResultContent(responseUsuario);
+		
+		String url = BASE_URL + "/usuarios/aceptar/41313351/7";
 
+		
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode jsonObject = mapper.createObjectNode();
 
+		jsonObject.put("observacion", "Excelente trabajo");
 
-
-	//-------------------------BORRAR--------------------------------
-	private void deleteAll() {
-		//------------------------Seteo Strings-----------------------------------
-
-		String urlTrabajo = BASE_URL + "/trabajos/1";
-
-		String urlUsuario1 = BASE_URL + "/usuarios/36626800";
-		String urlUsuario2 = BASE_URL + "/usuarios/41313351";
-
-		String urlTipoTrabajo1 = BASE_URL + "/tipoTrabajos/1";
-		String urlTipoTrabajo2 = BASE_URL + "/tipoTrabajos/2";
-		String urlTipoTrabajo3 = BASE_URL + "/tipoTrabajos/3";
-
-		String urlLugar1 = BASE_URL + "/lugares/1";
-		String urlLugar2 = BASE_URL + "/lugares/2";
-		String urlLugar3 = BASE_URL + "/lugares/3";
-
-		String urlTematica1 = BASE_URL + "/tematicas/1";
-		String urlTematica2 = BASE_URL + "/tematicas/2";
-		String urlTematica3 = BASE_URL + "/tematicas/3";
-		String urlTematica4 = BASE_URL + "/tematicas/4";
-		String urlTematica5 = BASE_URL + "/tematicas/5";
-
-		//------------------------Seteo Http Requests-----------------------------------
-
-
-		HttpDelete requestTrabajo = new HttpDelete(urlTrabajo);
-
-		HttpDelete requestUsuario1 = new HttpDelete(urlUsuario1);
-		HttpDelete requestUsuario2 = new HttpDelete(urlUsuario2);
-
-		HttpDelete requestTipoTrabajo1 = new HttpDelete(urlTipoTrabajo1);
-		HttpDelete requestTipoTrabajo2 = new HttpDelete(urlTipoTrabajo2);
-		HttpDelete requestTipoTrabajo3 = new HttpDelete(urlTipoTrabajo3);
-
-		HttpDelete requestLugar1 = new HttpDelete(urlLugar1);
-		HttpDelete requestLugar2 = new HttpDelete(urlLugar2);
-		HttpDelete requestLugar3 = new HttpDelete(urlLugar3);
-
-		HttpDelete requestTematica1 = new HttpDelete(urlTematica1);
-		HttpDelete requestTematica2 = new HttpDelete(urlTematica2);
-		HttpDelete requestTematica3 = new HttpDelete(urlTematica3);
-		HttpDelete requestTematica4 = new HttpDelete(urlTematica4);
-		HttpDelete requestTematica5 = new HttpDelete(urlTematica5);
-
-
-		//------------------------Ejecuto los Requests-----------------------------------
-
-		try {
-			client.execute(requestTrabajo);
-
-			client.execute(requestUsuario1);
-			client.execute(requestUsuario2);
-
-			client.execute(requestTipoTrabajo1);
-			client.execute(requestTipoTrabajo2);
-			client.execute(requestTipoTrabajo3);
-
-			client.execute(requestLugar1);
-			client.execute(requestLugar2);
-			client.execute(requestLugar3);
-
-			client.execute(requestTematica1);
-			client.execute(requestTematica2);
-			client.execute(requestTematica3);
-			client.execute(requestTematica4);
-			client.execute(requestTematica5);
-
-			System.out.println("\nEliminados correctamente todos los elementos");
-
-		}  
-		catch (Exception e) {
-			System.out.println("\nError al borrar todos los elementos");
-		}
-
+		String jsonString = jsonObject.toString();
+		HttpPost post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		HttpResponse response = client.execute(post);
+		
+		assertEquals(this.OK, response.getStatusLine().getStatusCode());
 	}
 
-	public void deleteDatabase() {
+	private void getTrabajosRevisadosByRevisor() throws ClientProtocolException, IOException{
+		System.out.println("TrabajoTest-> Se comprueba los trabajos que posee un revisor en fechas");
+
+		HttpGet trabajoRequest = new HttpGet(BASE_URL + "/usuarios/revisados/41313351/2-10-2018/2-2-2019");
+		HttpResponse responseTrabajo = client.execute(trabajoRequest);
+		String trabajo = getResultContent(responseTrabajo);
+
+		assertEquals(this.GETOK, responseTrabajo.getStatusLine().getStatusCode());
+	}
+
+	@AfterClass
+	public static void deleteDatabase() {
+		System.out.println("Test-> Se elimina la base de datos");
 		UsuarioDAO.getInstance().dropDatabaseCacic();
-
-		System.out.println("\nBorrada la Base de Datos");
 	}
-
 }

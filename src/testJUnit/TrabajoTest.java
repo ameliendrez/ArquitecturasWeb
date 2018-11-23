@@ -334,7 +334,8 @@ public class TrabajoTest {
 		desde.set(2018, 0, 1);
 		Calendar hasta = Calendar.getInstance();
 		hasta.set(2018, 11, 31);
-		assertEquals(1, usuarioDAO.findAllTrabajosInvestigacionEnRango(15682781, desde, hasta).size());
+		
+		assertEquals(1, usuarioDAO.findAllTrabajosInvestigacionRevisorEnRango(15682781, desde, hasta).size());
 	}
 	
 	@Test
@@ -344,7 +345,9 @@ public class TrabajoTest {
 		desde.set(2018, 0, 1);
 		Calendar hasta = Calendar.getInstance();
 		hasta.set(2018, 11, 31);
-		assertNotEquals(7, usuarioDAO.findAllTrabajosInvestigacionEnRango(15682781, desde, hasta).size());
+
+
+		assertNotEquals(7, usuarioDAO.findAllTrabajosInvestigacionRevisorEnRango(15682781, desde, hasta).size());
 	}
 	
 	@Test
@@ -371,16 +374,16 @@ public class TrabajoTest {
 		assertNotEquals(2, usuarioDAO.findAllTrabajosAutorRevisorTema(36626803, 39887656, ia.getId()).size());
 	}
 	
-	@AfterClass
-	public static void tearDown(){
-		System.out.println("LugarTest-> Se eliminan datos de la tabla trabajo y datos utilizados");
-
-		TematicaDAO.getInstance().removeAll();
-		LugarDAO.getInstance().removeAll();
-		TipoTrabajoDAO.getInstance().removeAll();
-		TrabajoDAO.getInstance().removeAll();
-		UsuarioDAO.getInstance().removeAll();
-		EvaluacionDAO.getInstance().removeAll();
-	}
+//	@AfterClass
+//	public static void tearDown(){
+//		System.out.println("LugarTest-> Se eliminan datos de la tabla trabajo y datos utilizados");
+//
+//		TematicaDAO.getInstance().removeAll();
+//		LugarDAO.getInstance().removeAll();
+//		TipoTrabajoDAO.getInstance().removeAll();
+//		TrabajoDAO.getInstance().removeAll();
+//		UsuarioDAO.getInstance().removeAll();
+//		EvaluacionDAO.getInstance().removeAll();
+//	}
 	
 }

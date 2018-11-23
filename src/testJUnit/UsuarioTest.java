@@ -169,13 +169,13 @@ public class UsuarioTest {
 	
 	@AfterClass
 	public static void tearDown(){
-//		System.out.println("LugarTest-> Se eliminan datos de la tabla usuario y datos utilizados");
-//		TematicaDAO.getInstance().removeAll();
-//		LugarDAO.getInstance().removeAll();
-//		UsuarioDAO.getInstance().removeAll();
-//		
-//		System.out.println("Test-> Se eliminan la base de datos cacic2018db");
-//		UsuarioDAO.getInstance().dropDatabaseCacic();
-//		System.out.println("Test-> Finaliza test");
+		System.out.println("LugarTest-> Se eliminan datos de la tabla usuario y datos utilizados");
+		TematicaDAO.getInstance().removeAll();
+		LugarDAO.getInstance().removeAll();
+		UsuarioDAO.getInstance().removeAll();
+		
+		System.out.println("Test-> Se eliminan la base de datos cacic2018db");
+		UsuarioDAO.getInstance().dropDatabaseCacic();
+		System.out.println("Test-> Finaliza test");
 	}
 }

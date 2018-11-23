@@ -17,6 +17,7 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +37,11 @@ public class TestRestUsuario {
 		this.client = HttpClientBuilder.create().build();
 	}
 
+	@BeforeClass
+	public static void cleanUserTable() {
+		
+	}
+	
 	@Test
 	public void testRESTInterface() throws ClientProtocolException, IOException {
 		crearUsuarios();
@@ -48,7 +54,7 @@ public class TestRestUsuario {
 	}
 
 	public void crearUsuarios() throws ClientProtocolException, IOException {
-		System.out.println("\nUsuarioTest-> Se crean usuarios");
+		System.out.println("UsuarioTest-> Se crean usuarios");
 
 		HttpGet lugarRequest = new HttpGet(BASE_URL + "/lugares/1");
 		HttpResponse responseLugar = client.execute(lugarRequest);
@@ -270,7 +276,7 @@ public class TestRestUsuario {
 	 */
 
 	public void listarUsuarios() throws ClientProtocolException, IOException {
-		System.out.println("\nUsuarioTest-> Se traen todos los usuarios");
+		System.out.println("UsuarioTest-> Se traen todos los usuarios");
 
 		String url = BASE_URL + "/usuarios";
 
@@ -291,7 +297,7 @@ public class TestRestUsuario {
 	 */
 
 	public void getUsuario() throws ClientProtocolException, IOException {
-		System.out.println("\nUsuarioTest-> Se trae un usuario");
+		System.out.println("UsuarioTest-> Se trae un usuario");
 
 		String url = BASE_URL + "/usuarios/36626800";
 
@@ -312,7 +318,7 @@ public class TestRestUsuario {
 	 */
 
 	public void getTrabajos() throws ClientProtocolException, IOException {
-		System.out.println("\nUsuarioTest-> Se traen los trabajos de un usuario");
+		System.out.println("UsuarioTest-> Se traen los trabajos de un usuario");
 
 		String url = BASE_URL + "/usuarios/36626800/trabajos";
 
@@ -333,7 +339,7 @@ public class TestRestUsuario {
 	 */
 
 	public void getConocimientos() throws ClientProtocolException, IOException {
-		System.out.println("\nUsuarioTest-> Se traen los conocimientos o tematicas de un usuario");
+		System.out.println("UsuarioTest-> Se traen los conocimientos o tematicas de un usuario");
 
 		String url = BASE_URL + "/usuarios/36626800/tematicas";
 
@@ -354,7 +360,7 @@ public class TestRestUsuario {
 	 */
 
 	public void getEvaluaciones() throws ClientProtocolException, IOException {
-		System.out.println("\nUsuarioTest-> Se traen las evaluaciones de un usuario");
+		System.out.println("UsuarioTest-> Se traen las evaluaciones de un usuario");
 
 		String url = BASE_URL + "/usuarios/36626800/evaluaciones";
 
@@ -376,7 +382,7 @@ public class TestRestUsuario {
 	 */
 
 	public void updateUsuario() throws ClientProtocolException, IOException {		
-		System.out.println("\nUsuarioTest-> Se modifican los datos de un usuario");
+		System.out.println("UsuarioTest-> Se modifican los datos de un usuario");
 
 
 		HttpGet lugarRequest = new HttpGet(BASE_URL + "/lugares/1");

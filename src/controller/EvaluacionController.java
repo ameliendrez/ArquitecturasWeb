@@ -22,7 +22,7 @@ import exceptions.RecursoNoExiste;
 public class EvaluacionController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON) 
-	public List<Evaluacion> getAllEvaluacions() {
+	public List<Evaluacion> getAllEvaluaciones() {
 		return EvaluacionDAO.getInstance().findAll();
 	}
 	
@@ -32,7 +32,7 @@ public class EvaluacionController {
 	public Evaluacion getEvaluacionById(@PathParam("id") String msg) {
 		int id = Integer.valueOf(msg);
 		Evaluacion evaluacion = EvaluacionDAO.getInstance().findById(id);
-		if(evaluacion != null)
+		if(evaluacion!=null)
 			return evaluacion;
 		else
 			throw new RecursoNoExiste(id);
@@ -42,8 +42,8 @@ public class EvaluacionController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createEvaluacion(Evaluacion evaluacion) {
-		Evaluacion result = EvaluacionDAO.getInstance().persist(evaluacion);
-		if(result == null) {
+		Evaluacion result= EvaluacionDAO.getInstance().persist(evaluacion);
+		if(result==null) {
 			throw new RecursoDuplicado(evaluacion.getId());
 		}else {
 			return Response.status(201).entity(evaluacion).build();
@@ -60,5 +60,5 @@ public class EvaluacionController {
 		else
 			throw new RecursoNoExiste(id);
 	}
-		
+
 }

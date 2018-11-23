@@ -12,7 +12,6 @@ import org.junit.runners.Suite;
 	TestRestTematica.class,
 	TestRestUsuario.class,
 	TestRestTrabajo.class
-
 })
 
 public class TestSuite {

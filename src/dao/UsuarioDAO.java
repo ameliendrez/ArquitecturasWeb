@@ -158,14 +158,14 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		return findAll().get(0);
 	}
 
-	public List<Trabajo> findAllTrabajosInvestigacionEnRango(Integer id, Calendar desde, Calendar hasta){
+	public List<Trabajo> findAllTrabajosInvestigacionRevisorEnRango(Integer id, Calendar desde, Calendar hasta){
 		EntityManager entityManager = EMF.createEntityManager();
 		Usuario user = this.findById(id);
 		if(user != null) {
 			Query query = entityManager.createQuery(
-					"SELECT t FROM Trabajo t JOIN Evaluacion e WHERE e.evaluador = :id AND e.fecha >= :desde AND e.fecha <= :hasta");
+					"SELECT e.trabajo FROM Evaluacion e WHERE e.evaluador = :user AND e.fecha >= :desde AND e.fecha <= :hasta");
 
-			query.setParameter("id", id);
+			query.setParameter("user", user);
 			query.setParameter("desde", desde);
 			query.setParameter("hasta", hasta);
 			if (!query.getResultList().isEmpty()) {

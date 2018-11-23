@@ -29,8 +29,7 @@ public class Evaluacion {
 	@JoinColumn(nullable = false)
 	private Usuario evaluador;
 
-	@Column(nullable = false)
-	@CreationTimestamp
+	@Column(nullable = true)
 	private Calendar fecha;
 
 	@Column(nullable = true)
@@ -47,7 +46,14 @@ public class Evaluacion {
 		this.fecha = Calendar.getInstance();	//Suponemos que el momento en que se registra la evaluacion es cuando fue realizada
 		this.observacion = observacion;
 	}
-
+	
+	public Evaluacion(Trabajo trabajo, Usuario evaluador, String observacion, Calendar fecha) {
+		this.trabajo = trabajo;
+		this.evaluador = evaluador;
+		this.fecha = fecha;	//Suponemos que el momento en que se registra la evaluacion es cuando fue realizada
+		this.observacion = observacion;
+	}
+	
 	//--------------Getters y Setters--------------
 
 	@Override

@@ -10,7 +10,7 @@ import org.junit.runners.Suite;
 	LugarTest.class,
 	TematicaTest.class,
 	TipoTrabajoTest.class,
-//	TrabajoTest.class,
+	TrabajoTest.class,
 	UsuarioTest.class
 })
 
