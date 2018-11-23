@@ -36,11 +36,6 @@ public class TestRestUsuario {
 	private void resetHttpClient() {
 		this.client = HttpClientBuilder.create().build();
 	}
-
-	@BeforeClass
-	public static void cleanUserTable() {
-		
-	}
 	
 	@Test
 	public void testRESTInterface() throws ClientProtocolException, IOException {

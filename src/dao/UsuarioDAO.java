@@ -182,26 +182,45 @@ public class UsuarioDAO extends BaseJpaDAO<Usuario, Integer> {
 		List<Trabajo>retorno = new ArrayList<Trabajo>();
 
 		TematicaDAO daoT = TematicaDAO.getInstance();
-		Tematica tema = daoT .findById(idTematica);
+		Tematica tema = daoT.findById(idTematica);
 		if(autor != null && evaluador != null && tema !=null) {
-			Query query = entityManager.createNativeQuery(
-					"SELECT * FROM trabajo t "
-							+ "JOIN autor_trabajo aut ON t.id = aut.trabajo_id "
-							+ "JOIN evaluador_trabajo et ON t.id = et.trabajo_id "
-							+ "JOIN trabajo_tematica tt ON t.id = tt.Trabajo_id "
-							+ "WHERE aut.autor_id = :idAutor " 
-							+ "AND et.evaluador_id = :idEvaluador "
-							+ "AND tt.temas_id = :idTematica", Trabajo.class);
+//			Query query2 = entityManager.createNativeQuery(
+//					"SELECT * FROM trabajo t "
+//							+ "JOIN autor_trabajo aut ON t.id = aut.trabajo_id "
+//							+ "JOIN evaluador_trabajo et ON t.id = et.trabajo_id "
+//							+ "JOIN trabajo_tematica tt ON t.id = tt.Trabajo_id "
+//							+ "WHERE aut.autor_id = :idAutor " 
+//							+ "AND et.evaluador_id = :idEvaluador "
+//							+ "AND tt.temas_id = :idTematica", Trabajo.class);
 
-			/*
-  				Query query = entityManager.createQuery(
-  				"SELECT t FROM Trabajo t JOIN t.autores at JOIN t.evaluadores et JOIN t.tematicas tpc 
-  					WHERE at.id = :idAutor AND et.id = :idEvaluador AND tpc.id = :idTematica");
-			 */
+		// "SELECT e.trabajo FROM Evaluacion e WHERE e.evaluador = :user 
+		//	AND e.fecha >= :desde AND e.fecha <= :hasta");
+			
+			//SELECT e.trabajo FROM Evaluacion e WHERE e.evaluador = :evaluador
+			// AND e.trabajo.autor = :autor 
+			
+//SELECT t FROM Trabajo t, Evaluacion e, 
+//WHERE e.evaluador = :evaluador
+//AND t = e.trabajo
+//AND :tema MEMBER of t.tematicas
+//AND :autor MEMBER OF t.autores
 
-			query.setParameter("idAutor", idAutor);
-			query.setParameter("idEvaluador", idEvaluador);
-			query.setParameter("idTematica", idTematica);
+//		"SELECT t FROM Tematica t, Usuario u 
+		//WHERE u.dni = :id AND t MEMBER OF u.temas");
+
+//  				Query query = entityManager.createQuery("SELECT t FROM "
+//  						+ "Trabajo t JOIN t.autores at JOIN t.evaluadores et JOIN t.tematicas tpc" 
+//  					+ "WHERE at.id = :autor AND et.id = :evaluador AND tpc.id = :tematica");
+	
+Query query = entityManager.createQuery("SELECT t FROM Evaluacion e "
+		+ "JOIN e.trabajo t JOIN t.autores aut JOIN t.tematicas tem "
+		+ "WHERE e.evaluador = :evaluador "
+		//+ "AND :tema MEMBER of tem "
+		+ "AND :autor MEMBER OF aut ");
+
+			query.setParameter("autor", autor);
+			query.setParameter("evaluador", evaluador);
+			//query.setParameter("tema", tema);
 			if (!query.getResultList().isEmpty()) {
 				retorno = query.getResultList();
 				return retorno;

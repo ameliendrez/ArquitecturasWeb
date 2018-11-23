@@ -40,7 +40,7 @@ public class TestRestLugar {
 	}
 
 	public void crearLugares() throws ClientProtocolException, IOException {
-		System.out.println("\nLugarTest-> Se crean lugares");
+		System.out.println("LugarTest-> Se crean lugares");
 
 		String url = BASE_URL + "/lugares";
 
@@ -103,7 +103,7 @@ public class TestRestLugar {
 	}
 
 	public void listarLugares() throws ClientProtocolException, IOException {
-		System.out.println("\nLugarTest-> Se traen todos los lugares");
+		System.out.println("LugarTest-> Se traen todos los lugares");
 
 		String url = BASE_URL + "/lugares";
 
@@ -117,7 +117,7 @@ public class TestRestLugar {
 	}
 
 	public void getLugar() throws ClientProtocolException, IOException {
-		System.out.println("\nLugarTest-> Se trae un lugar");
+		System.out.println("LugarTest-> Se trae un lugar");
 
 		String url = BASE_URL + "/lugares/1";
 

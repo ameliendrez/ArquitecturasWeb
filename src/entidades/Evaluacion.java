@@ -50,7 +50,7 @@ public class Evaluacion {
 	public Evaluacion(Trabajo trabajo, Usuario evaluador, String observacion, Calendar fecha) {
 		this.trabajo = trabajo;
 		this.evaluador = evaluador;
-		this.fecha = fecha;	//Suponemos que el momento en que se registra la evaluacion es cuando fue realizada
+		this.fecha = fecha;	
 		this.observacion = observacion;
 	}
 	

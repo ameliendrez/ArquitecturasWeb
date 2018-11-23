@@ -231,7 +231,7 @@ public class Usuario {
 	}
 
 	public boolean esEvaluadorApto(Trabajo t) {
-		if	(!this.trabajos_investigacion.contains(t)) {
+		if	(!this.trabajos_investigacion.contains(t) && this.trabajos_evaluacion.size() < 3) {
 			boolean mismoLugarTrabajo = false;
 			for(Usuario u: t.getAutores()) {
 				if(u.getLugar().equals(this.lugar))
